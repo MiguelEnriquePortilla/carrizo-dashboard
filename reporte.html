@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Carrizo — LUNES 02 MARZO 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0f14;--surface:#161920;--border:#252830;
+  --text:#e8eaf0;--muted:#666c80;
+  --red:#ff4757;--orange:#ff7f50;--yellow:#ffc13b;--green:#2ed573;
+  --red-dim:#3a1520;--orange-dim:#2e1e10;--yellow-dim:#2a2210;--green-dim:#0e2a1a;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.header-branch{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.header-title{font-size:18px;font-weight:700}
+.header-date{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.main{max-width:1100px;margin:0 auto;padding:28px 20px}
+.section-title{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.semaforo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px}
+.semaforo-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;position:relative;overflow:hidden}
+.semaforo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.semaforo-card.green::before{background:var(--green)}
+.semaforo-card.yellow::before{background:var(--yellow)}
+.semaforo-card.red::before{background:var(--red)}
+.semaforo-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.semaforo-value{font-family:var(--mono);font-size:30px;font-weight:500;line-height:1;margin-bottom:4px}
+.semaforo-card.green .semaforo-value{color:var(--green)}
+.semaforo-card.yellow .semaforo-value{color:var(--yellow)}
+.semaforo-card.red .semaforo-value{color:var(--red)}
+.semaforo-meta{font-size:11px;color:var(--muted)}
+.semaforo-status{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.green .semaforo-status{background:var(--green-dim);color:var(--green)}
+.yellow .semaforo-status{background:var(--yellow-dim);color:var(--yellow)}
+.red .semaforo-status{background:var(--red-dim);color:var(--red)}
+.chart-container{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:36px}
+.chart-inner{display:flex;align-items:flex-end;gap:10px;height:160px;margin-top:14px}
+.bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bar-wrap{width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:120px}
+.bar{width:100%;border-radius:4px 4px 0 0;min-height:4px}
+.bar-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center}
+.bar-count{font-family:var(--mono);font-size:11px;font-weight:500;text-align:center}
+.bar-saldo{font-size:9px;color:var(--muted);font-family:var(--mono);text-align:center}
+.bar-1-7{background:#2ed57340;border:1px solid var(--green)}
+.bar-8-14{background:#2ed57325;border:1px solid #2ed57360}
+.bar-15-21{background:#ffc13b30;border:1px solid #ffc13b70}
+.bar-22-30{background:#ff7f5040;border:1px solid var(--orange)}
+.bar-31-60{background:#ff475740;border:1px solid var(--red)}
+.bar-60{background:#ff000035;border:1px solid #ff0000}
+.count-1-7{color:var(--green)}.count-8-14{color:#7defa0}.count-15-21{color:var(--yellow)}.count-22-30{color:var(--orange)}.count-31-60{color:var(--red)}.count-60{color:#ff6b6b}
+.gestores-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px}
+.gestor-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.gestor-header{padding:14px 18px;background:#1c1f28;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.gestor-name{font-size:16px;font-weight:700}
+.gestor-stats{display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.prioridad-block{border-top:1px solid var(--border);padding:12px 18px}
+.p1-block{background:#1a1013}.p2-block{background:#1a1308}.p3-block{background:#1a1a08}.p4-block{background:#0d1a10}
+.p-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.p-badge{font-family:var(--mono);font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;letter-spacing:1px}
+.p1-badge{background:var(--red-dim);color:var(--red);border:1px solid #ff475740}
+.p2-badge{background:var(--orange-dim);color:var(--orange);border:1px solid #ff7f5040}
+.p3-badge{background:var(--yellow-dim);color:var(--yellow);border:1px solid #ffc13b40}
+.p4-badge{background:var(--green-dim);color:var(--green);border:1px solid #2ed57340}
+.p-title{font-size:11px;font-weight:600;flex:1}
+.p-count{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+.p-table{width:100%;border-collapse:collapse;font-size:12px}
+.p-table thead tr{border-bottom:1px solid var(--border)}
+.p-table th{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:5px 6px;text-align:left}
+.p-table tbody tr{border-bottom:1px solid #1e2128}
+.p-table tbody tr:last-child{border-bottom:none}
+.p-table tbody tr:hover{background:#ffffff08}
+.p-table td{padding:6px 6px}
+.td-nombre{font-weight:500}.td-saldo{font-family:var(--mono);font-size:12px;color:#c8cad4}.td-dias{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;white-space:nowrap}
+.badge-today{background:#0e2a1a;color:var(--green);border:1px solid #2ed57340}
+.badge-rota{background:var(--red-dim);color:var(--red);border:1px solid #ff475740}
+.badge-si{background:#1a2a1a;color:#7defa0;border:1px solid #2ed57320}
+.badge-no{background:#2a1a1a;color:#ff8080;border:1px solid #ff475720}
+.empty-msg{color:var(--muted);font-size:12px;padding:8px 0;font-style:italic}
+.footer{text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
+@media(max-width:800px){.gestores-grid{grid-template-columns:1fr}.semaforo-grid{grid-template-columns:1fr}.header{flex-direction:column;gap:8px}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div>
+    <div class="header-branch">Préstamos Relámpago · Sucursal Carrizo 065</div>
+    <div class="header-title">Dashboard de Cobranza</div>
+  </div>
+  <div class="header-date">LUNES 02 MARZO 2026<br><span style="color:#444c60">Gerente: Miguel Portilla</span></div>
+</header>
+<main class="main">
+  <div class="section-title">Métricas de Cartera</div>
+  <div class="semaforo-grid">
+    <div class="semaforo-card red">
+      <div class="semaforo-label">Cartera 1-30 días</div>
+      <div class="semaforo-value">22.1%</div>
+      <div class="semaforo-meta">Meta: &lt;10.0%</div>
+      <span class="semaforo-status">CRÍTICO</span>
+    </div>
+    <div class="semaforo-card red">
+      <div class="semaforo-label">Cartera 31-60 días</div>
+      <div class="semaforo-value">4.5%</div>
+      <div class="semaforo-meta">Meta: &lt;1.5%</div>
+      <span class="semaforo-status">CRÍTICO</span>
+    </div>
+    <div class="semaforo-card red">
+      <div class="semaforo-label">Cartera 31-150 días</div>
+      <div class="semaforo-value">9.6%</div>
+      <div class="semaforo-meta">Meta: &lt;6.90%</div>
+      <span class="semaforo-status">CRÍTICO</span>
+    </div>
+  </div>
+
+  <div class="section-title">Distribución de Mora</div>
+  <div class="chart-container">
+    <div id="chart-bars" class="chart-inner"></div>
+  </div>
+
+  <div class="section-title">Plan de Cobranza por Gestor</div>
+  <div class="gestores-grid">
+        <div class="gestor-card">
+          <div class="gestor-header">
+            <div class="gestor-name">Eduardo</div>
+            <div class="gestor-stats">
+              <span>30 cuentas</span>
+              <span>$140,612</span>
+              <span>37.8% del total</span>
+            </div>
+          </div>
+
+          <div class="prioridad-block p1-block">
+            <div class="p-header">
+              <span class="p-badge p1-badge">P1</span>
+              <span class="p-title">COBRO INMEDIATO — 31-60d + Promesas HOY + Rotas</span>
+              <span class="p-count">15 cuentas · $99,373</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">SANJUANA MARIA AVILES PUENTE</td><td class="td-saldo">$1,116</td><td class="td-dias">12d</td><td><span class="badge badge-today">✅ HOY</span></td></tr><tr><td class="td-nombre">LUIS ALBERTO MATA LOPEZ</td><td class="td-saldo">$10,739</td><td class="td-dias">34d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">GUADALUPE ELIZABETH HERNANDEZ MORENO</td><td class="td-saldo">$9,402</td><td class="td-dias">60d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">CARLOS GARAY CRUZ</td><td class="td-saldo">$5,372</td><td class="td-dias">41d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">ROQUE LLANOS CERVANTES</td><td class="td-saldo">$4,033</td><td class="td-dias">32d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">BRAYAN GUADALUPE SUAREZ ALPIREZ</td><td class="td-saldo">$4,031</td><td class="td-dias">49d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">ROSA MARIA IBARRA GARZA</td><td class="td-saldo">$3,509</td><td class="td-dias">32d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">ROSALINDA ZAVALA MARTINEZ</td><td class="td-saldo">$2,749</td><td class="td-dias">24d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">ROSALIA RAMIREZ MENDEZ</td><td class="td-saldo">$1,402</td><td class="td-dias">16d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">JESSICA LIZETH OSORIO VILLEGAS</td><td class="td-saldo">$936</td><td class="td-dias">11d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">FELIPE DE JESUS BARCENAS GOMEZ</td><td class="td-saldo">$31,162</td><td class="td-dias">44d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">FRANCISCO JAVIER QUINTO LUA</td><td class="td-saldo">$9,820</td><td class="td-dias">34d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">LEOPOLDO GUADALUPE VELAZQUEZ BOLAÑOS</td><td class="td-saldo">$7,471</td><td class="td-dias">60d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JORGE EFRAIN MARTINEZ MEDRANO</td><td class="td-saldo">$5,173</td><td class="td-dias">38d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">CLAUDIA PATRICIA GARCIA JASSO</td><td class="td-saldo">$2,459</td><td class="td-dias">57d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="prioridad-block p2-block">
+            <div class="p-header">
+              <span class="p-badge p2-badge">P2</span>
+              <span class="p-title">PROMESAR ANTES QUE IMPACTEN — 22-30 días</span>
+              <span class="p-count">7 cuentas · $25,484</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">JORGE EFRAIN MARTINEZ MEDRANO</td><td class="td-saldo">$4,655</td><td class="td-dias">28d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">SANTIAGO GONZALEZ FUENTES</td><td class="td-saldo">$4,121</td><td class="td-dias">28d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JOSE ALFREDO TREJO RICO</td><td class="td-saldo">$3,856</td><td class="td-dias">27d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">MARIA GUADALUPE PERALES CASTILLO</td><td class="td-saldo">$1,640</td><td class="td-dias">27d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">ANGEL ARTURO GUEL COVARRUBIAS</td><td class="td-saldo">$3,010</td><td class="td-dias">27d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">ROSALINDA ZAVALA MARTINEZ</td><td class="td-saldo">$2,749</td><td class="td-dias">24d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">LUIS ALBERTO MATA LOPEZ</td><td class="td-saldo">$5,453</td><td class="td-dias">24d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="prioridad-block p3-block">
+            <div class="p-header">
+              <span class="p-badge p3-badge">P3</span>
+              <span class="p-title">IMPACTAN PRÓXIMA SEMANA — 15-21 días</span>
+              <span class="p-count">2 cuentas · $4,753</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">KARLA PAOLA FERREL ORTIZ</td><td class="td-saldo">$3,352</td><td class="td-dias">19d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">ROSALIA RAMIREZ MENDEZ</td><td class="td-saldo">$1,402</td><td class="td-dias">16d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="prioridad-block p4-block">
+            <div class="p-header">
+              <span class="p-badge p4-badge">P4</span>
+              <span class="p-title">GESTIÓN TEMPRANA — 8-14 días (llamada/mensaje)</span>
+              <span class="p-count">10 cuentas · $17,204</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">SANJUANA MARIA AVILES PUENTE</td><td class="td-saldo">$1,116</td><td class="td-dias">12d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">LESLI ITZAMARA DUARTE REYES</td><td class="td-saldo">$715</td><td class="td-dias">11d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">ROSA IRMA DUARTE SANDOVAL</td><td class="td-saldo">$3,242</td><td class="td-dias">11d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">ANGEL ISRAEL CHAVEZ GARCIA</td><td class="td-saldo">$2,991</td><td class="td-dias">11d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JESSICA LIZETH OSORIO VILLEGAS</td><td class="td-saldo">$936</td><td class="td-dias">11d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">ANGELICA LOPEZ CASTILLO</td><td class="td-saldo">$1,137</td><td class="td-dias">10d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">LUIS DAVID MEDRANO MONSIVAIS</td><td class="td-saldo">$3,216</td><td class="td-dias">9d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">AMERICO FLORENTINO HERNANDEZ QUINTERO</td><td class="td-saldo">$2,720</td><td class="td-dias">9d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">ESMERALDA CARBAJAL CASTILLO</td><td class="td-saldo">$638</td><td class="td-dias">9d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">MARIA ISABEL VARGAS CAMPOS</td><td class="td-saldo">$494</td><td class="td-dias">9d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="gestor-card">
+          <div class="gestor-header">
+            <div class="gestor-name">Gerardo</div>
+            <div class="gestor-stats">
+              <span>32 cuentas</span>
+              <span>$160,545</span>
+              <span>43.1% del total</span>
+            </div>
+          </div>
+
+          <div class="prioridad-block p1-block">
+            <div class="p-header">
+              <span class="p-badge p1-badge">P1</span>
+              <span class="p-title">COBRO INMEDIATO — 31-60d + Promesas HOY + Rotas</span>
+              <span class="p-count">18 cuentas · $119,602</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">ROBERTO DORADO CAMPOS</td><td class="td-saldo">$3,965</td><td class="td-dias">10d</td><td><span class="badge badge-today">✅ HOY</span></td></tr><tr><td class="td-nombre">FELIX DIAZ GUEVARA</td><td class="td-saldo">$34,081</td><td class="td-dias">49d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">GILBERTO SANCHEZ OLVERA</td><td class="td-saldo">$12,073</td><td class="td-dias">43d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">JESUS REYMUNDO AGUERO PRESAS</td><td class="td-saldo">$7,000</td><td class="td-dias">56d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">MIGUEL ANGEL ESTRADA SEPULVEDA</td><td class="td-saldo">$6,258</td><td class="td-dias">46d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">LORENA ALEJANDRA HERNANDEZ MEDINA</td><td class="td-saldo">$5,073</td><td class="td-dias">23d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">FRANCISCO JAVIER CASTELLANOS GIL</td><td class="td-saldo">$3,885</td><td class="td-dias">17d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">NOHEMI HERNANDEZ GUERRERO</td><td class="td-saldo">$3,297</td><td class="td-dias">54d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">JORGE LUIS RODRIGUEZ SEGOVIA</td><td class="td-saldo">$2,189</td><td class="td-dias">25d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">MARIA JUANA YOLANDA GUTIERREZ GUTIERREZ</td><td class="td-saldo">$178</td><td class="td-dias">19d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">CARLOS ISRAEL GARCIA MARTINEZ</td><td class="td-saldo">$10,143</td><td class="td-dias">48d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">ARMANDO HERNANDEZ PADILLA</td><td class="td-saldo">$6,200</td><td class="td-dias">38d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">ILDEFONSO PINEDA BLAS</td><td class="td-saldo">$5,491</td><td class="td-dias">46d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">AGUSTINA DOMINGUEZ VAZQUEZ</td><td class="td-saldo">$5,090</td><td class="td-dias">36d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">ALFREDO GARCIA MENDOZA</td><td class="td-saldo">$5,083</td><td class="td-dias">53d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">JESUS ALONZO CERRITOS CANTU</td><td class="td-saldo">$4,553</td><td class="td-dias">35d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">ARMANDO ALVARADO VIERA</td><td class="td-saldo">$2,589</td><td class="td-dias">32d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">ELIAS JOSUE CAZARES CEDILLO</td><td class="td-saldo">$2,453</td><td class="td-dias">56d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="prioridad-block p2-block">
+            <div class="p-header">
+              <span class="p-badge p2-badge">P2</span>
+              <span class="p-title">PROMESAR ANTES QUE IMPACTEN — 22-30 días</span>
+              <span class="p-count">10 cuentas · $35,384</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">JOSE IVAN HERNANDEZ HINOJOSA</td><td class="td-saldo">$1,283</td><td class="td-dias">28d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JUAN VALENTIN ZAVALA PEREZ</td><td class="td-saldo">$2,651</td><td class="td-dias">28d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">BARTOLO TURRUBIATES MALDONADO</td><td class="td-saldo">$5,778</td><td class="td-dias">28d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">EFRAIN DE JESUS TREJO ZENTENO</td><td class="td-saldo">$2,686</td><td class="td-dias">27d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JOSE HUMBERTO PALOS MONCADA</td><td class="td-saldo">$2,930</td><td class="td-dias">26d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">CESAR ALEJANDRO PINEDA HERNANDEZ</td><td class="td-saldo">$6,125</td><td class="td-dias">25d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JORGE LUIS RODRIGUEZ SEGOVIA</td><td class="td-saldo">$2,189</td><td class="td-dias">25d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">JHONATAN SARAO MENDEZ</td><td class="td-saldo">$3,166</td><td class="td-dias">24d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">LORENA ALEJANDRA HERNANDEZ MEDINA</td><td class="td-saldo">$5,073</td><td class="td-dias">23d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">MARIA MAGDALENA MEDRANO MORALES</td><td class="td-saldo">$3,502</td><td class="td-dias">23d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="prioridad-block p3-block">
+            <div class="p-header">
+              <span class="p-badge p3-badge">P3</span>
+              <span class="p-title">IMPACTAN PRÓXIMA SEMANA — 15-21 días</span>
+              <span class="p-count">5 cuentas · $8,830</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">MARIA JUANA YOLANDA GUTIERREZ GUTIERREZ</td><td class="td-saldo">$178</td><td class="td-dias">19d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">JUAN ARMANDO ARGUIJO HERNANDEZ</td><td class="td-saldo">$2,018</td><td class="td-dias">19d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">JOSE GABRIEL GONZALEZ HINOJOSA</td><td class="td-saldo">$1,614</td><td class="td-dias">19d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">FRANCISCO JAVIER CASTELLANOS GIL</td><td class="td-saldo">$3,885</td><td class="td-dias">17d</td><td><span class="badge badge-rota">⚠️ ROTA</span></td></tr><tr><td class="td-nombre">JESUS ARMANDO MERCADO SALINAS</td><td class="td-saldo">$1,134</td><td class="td-dias">17d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="prioridad-block p4-block">
+            <div class="p-header">
+              <span class="p-badge p4-badge">P4</span>
+              <span class="p-title">GESTIÓN TEMPRANA — 8-14 días (llamada/mensaje)</span>
+              <span class="p-count">3 cuentas · $7,786</span>
+            </div>
+            <table class="p-table">
+              <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody><tr><td class="td-nombre">ALFREDO GARCIA MENDOZA</td><td class="td-saldo">$1,998</td><td class="td-dias">14d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr><tr><td class="td-nombre">ROBERTO DORADO CAMPOS</td><td class="td-saldo">$3,965</td><td class="td-dias">10d</td><td><span class="badge badge-si">✓ Promesa</span></td></tr><tr><td class="td-nombre">LAZARO EMANUEL CABALLERO MENDOZA</td><td class="td-saldo">$1,823</td><td class="td-dias">10d</td><td><span class="badge badge-no">✗ Sin promesa</span></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+</main>
+<footer class="footer">Generado automáticamente · LUNES 02 MARZO 2026 · Carrizo 065</footer>
+
+<script>
+const dist=[{"label": "1-7d", "cuentas": 0, "saldo": 0.0}, {"label": "8-14d", "cuentas": 13, "saldo": 24990.600000000002}, {"label": "15-21d", "cuentas": 7, "saldo": 13582.66}, {"label": "22-30d", "cuentas": 17, "saldo": 60867.93000000001}, {"label": "31-60d", "cuentas": 25, "saldo": 201715.8}, {"label": "60+d", "cuentas": 4, "saldo": 71099.68}];
+const bc=['bar-1-7','bar-8-14','bar-15-21','bar-22-30','bar-31-60','bar-60'];
+const cc=['count-1-7','count-8-14','count-15-21','count-22-30','count-31-60','count-60'];
+const max=Math.max(...dist.map(d=>d.cuentas),1);
+const container=document.getElementById('chart-bars');
+dist.forEach((d,i)=>{
+  const h=Math.max((d.cuentas/max)*100,4);
+  const sk=(d.saldo/1000).toFixed(1);
+  const g=document.createElement('div');
+  g.className='bar-group';
+  g.innerHTML=`<div class="bar-count ${cc[i]}">${d.cuentas}</div><div class="bar-saldo">${sk}k</div><div class="bar-wrap"><div class="bar ${bc[i]}" style="height:${h}%"></div></div><div class="bar-label">${d.label}</div>`;
+  container.appendChild(g);
+});
+</script>
+</body>
+</html>
