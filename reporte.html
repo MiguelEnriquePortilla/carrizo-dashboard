@@ -23,16 +23,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .hdr-title{font-size:17px;font-weight:700}
 .hdr-date{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;line-height:1.6}
 
-/* KPI STRIP — horizontal scroll en móvil */
-.kpi-strip{display:flex;gap:10px;padding:12px 16px;overflow-x:auto;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  -webkit-overflow-scrolling:touch;scrollbar-width:none}
-.kpi-strip::-webkit-scrollbar{display:none}
-.kpi{flex:0 0 auto;min-width:130px;background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:12px 14px}
-.kpi-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
-.kpi-val{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1}
-.kpi-meta{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:3px}
+/* KPI STRIP — 3 tarjetas iguales, sin scroll */
+.kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 16px;
+  background:var(--surface);border-bottom:1px solid var(--border)}
+.kpi{background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 10px 8px}
+.kpi-label{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.5px;
+  text-transform:uppercase;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-val{font-family:var(--mono);font-size:22px;font-weight:700;line-height:1}
+.kpi-meta{font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:3px;white-space:nowrap}
 
 /* FILTER BAR */
 .filter-bar{padding:10px 16px;display:flex;align-items:center;gap:8px;
