@@ -2,286 +2,327 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Cobranza Carrizo — Lunes 01 Junio 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #22263a;
-  --border: #2e3350;
-  --text: #e8eaf2;
-  --muted: #6b7280;
-  --accent: #6366f1;
-  --accent-dim: rgba(99,102,241,0.12);
-  --green: #22c55e;
-  --yellow: #f59e0b;
-  --red: #ef4444;
-  --orange: #f97316;
-  --mono: 'IBM Plex Mono', monospace;
-  --sans: 'IBM Plex Sans', sans-serif;
+  --bg:#0f1117; --surface:#1a1d27; --surface2:#22263a; --border:#2e3350;
+  --text:#e8eaf2; --muted:#6b7280; --accent:#6366f1; --accent-dim:rgba(99,102,241,0.12);
+  --green:#22c55e; --yellow:#f59e0b; --red:#ef4444; --orange:#f97316;
+  --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+  --radius:10px; --touch:44px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; min-height:100vh; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;min-height:100vh}
 
 /* HEADER */
-.hdr { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
-.hdr-left { display:flex; flex-direction:column; gap:2px; }
-.hdr-tag { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; }
-.hdr-title { font-size:18px; font-weight:700; color:var(--text); }
-.hdr-date { font-family:var(--mono); font-size:11px; color:var(--muted); }
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;
+  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hdr-tag{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.hdr-title{font-size:17px;font-weight:700}
+.hdr-date{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;line-height:1.6}
 
-/* KPI BAR */
-.kpi-bar { display:flex; gap:12px; flex-wrap:wrap; padding:12px 24px; background:var(--surface); border-bottom:1px solid var(--border); }
-.kpi { display:flex; flex-direction:column; gap:2px; padding:10px 16px; background:var(--surface2); border-radius:8px; border:1px solid var(--border); min-width:140px; }
-.kpi-label { font-size:10px; font-family:var(--mono); color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
-.kpi-val { font-family:var(--mono); font-size:22px; font-weight:600; }
-.kpi-meta { font-size:10px; color:var(--muted); font-family:var(--mono); }
+/* KPI STRIP — horizontal scroll en móvil */
+.kpi-strip{display:flex;gap:10px;padding:12px 16px;overflow-x:auto;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.kpi-strip::-webkit-scrollbar{display:none}
+.kpi{flex:0 0 auto;min-width:130px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 14px}
+.kpi-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.kpi-val{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1}
+.kpi-meta{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:3px}
 
 /* FILTER BAR */
-.filter-bar { padding:12px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--border); background:var(--bg); }
-.filter-label { font-size:11px; font-family:var(--mono); color:var(--muted); letter-spacing:1px; }
-.filter-btn { padding:6px 16px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:var(--mono); font-size:11px; cursor:pointer; transition:all .15s; }
-.filter-btn:hover { border-color:var(--accent); color:var(--accent); }
-.filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
-.progress-summary { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--muted); }
-.progress-summary b { color:var(--green); }
+.filter-bar{padding:10px 16px;display:flex;align-items:center;gap:8px;
+  background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:57px;z-index:99}
+.filter-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;white-space:nowrap}
+.filter-btn{min-height:var(--touch);padding:0 18px;border-radius:22px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-family:var(--mono);font-size:12px;
+  cursor:pointer;transition:all .15s;display:flex;align-items:center}
+.filter-btn:active{transform:scale(.96)}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.progress{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+.progress b{color:var(--green)}
 
-/* MAIN TABLE */
-.main { padding:20px 24px; }
-.section-title { font-family:var(--mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; padding-left:4px; display:flex; align-items:center; gap:10px; }
-.section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+/* MAIN */
+.main{padding:14px 16px;max-width:900px;margin:0 auto}
 
-.prio-block { margin-bottom:24px; }
-.prio-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
-.prio-badge { font-family:var(--mono); font-size:10px; font-weight:600; padding:3px 10px; border-radius:4px; letter-spacing:1px; }
-.prio-badge.P1 { background:rgba(239,68,68,.15); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
-.prio-badge.P2 { background:rgba(249,115,22,.15); color:#f97316; border:1px solid rgba(249,115,22,.3); }
-.prio-badge.P3 { background:rgba(245,158,11,.15); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
-.prio-badge.P4 { background:rgba(34,197,94,.15); color:#22c55e; border:1px solid rgba(34,197,94,.3); }
-.prio-desc { font-size:11px; color:var(--muted); }
-.prio-count { font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto; }
+/* PRIORITY BLOCK */
+.prio-block{margin-bottom:20px}
+.prio-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.prio-badge{font-family:var(--mono);font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:6px;letter-spacing:1px}
+.prio-badge.P1{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.prio-badge.P2{background:rgba(249,115,22,.15);color:#f97316;border:1px solid rgba(249,115,22,.3)}
+.prio-badge.P3{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+.prio-badge.P4{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+.prio-title{font-size:13px;font-weight:700}
+.prio-desc{font-size:11px;color:var(--muted)}
+.prio-count{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto}
 
-table { width:100%; border-collapse:collapse; }
-thead tr { border-bottom:1px solid var(--border); }
-th { font-family:var(--mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); padding:8px 12px; text-align:left; font-weight:500; }
-tbody tr { border-bottom:1px solid rgba(46,51,80,.5); transition:background .1s; }
-tbody tr:hover { background:var(--accent-dim); }
-tbody tr.done { opacity:.45; }
-tbody tr.done td.td-name { text-decoration:line-through; color:var(--muted); }
-td { padding:10px 12px; vertical-align:middle; }
-.td-name { font-weight:500; font-size:13px; }
-.td-saldo { font-family:var(--mono); font-size:12px; color:#a5b4fc; }
-.td-mora { font-family:var(--mono); font-size:12px; color:var(--muted); }
+/* CARDS (reemplaza tabla en móvil) */
+.cards{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;transition:border-color .15s}
+.card.done{opacity:.5;border-color:var(--border)}
+.card.done .card-name{text-decoration:line-through;color:var(--muted)}
+.card-top{display:flex;align-items:flex-start;gap:12px}
+.card-chk{width:22px;height:22px;min-width:22px;accent-color:var(--accent);
+  cursor:pointer;margin-top:2px}
+.card-info{flex:1;min-width:0}
+.card-name{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:6px;
+  word-break:break-word}
+.card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.card-saldo{font-family:var(--mono);font-size:13px;color:#a5b4fc;font-weight:500}
+.card-ts{font-family:var(--mono);font-size:10px;color:var(--green);margin-left:auto;white-space:nowrap}
+.card-result{margin-top:10px;margin-left:34px}
+.card-result input{width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;
+  padding:10px 12px;transition:border .15s}
+.card-result input:focus{outline:none;border-color:var(--accent)}
+.card-result input::placeholder{color:var(--muted)}
 
-.tag { display:inline-block; padding:2px 8px; border-radius:4px; font-family:var(--mono); font-size:10px; font-weight:500; white-space:nowrap; }
-.tag-hoy { background:rgba(34,197,94,.15); color:#22c55e; border:1px solid rgba(34,197,94,.3); }
-.tag-rota { background:rgba(239,68,68,.15); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
-.tag-si { background:rgba(99,102,241,.15); color:#a5b4fc; border:1px solid rgba(99,102,241,.3); }
-.tag-no { background:rgba(107,114,128,.1); color:var(--muted); border:1px solid var(--border); }
-.tag-mora { background:rgba(249,115,22,.1); color:#f97316; border:1px solid rgba(249,115,22,.3); }
+/* TAGS */
+.tag{display:inline-block;padding:3px 8px;border-radius:5px;
+  font-family:var(--mono);font-size:10px;font-weight:600;white-space:nowrap}
+.tag-hoy{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+.tag-rota{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.tag-si{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3)}
+.tag-no{background:rgba(107,114,128,.1);color:var(--muted);border:1px solid var(--border)}
+.tag-mora{background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3)}
+.tag-gestor{background:rgba(99,102,241,.08);color:#818cf8;border:1px solid rgba(99,102,241,.2);font-size:9px}
 
-/* VISIT CELL */
-.visit-cell { display:flex; align-items:center; gap:8px; }
-.chk { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
-.result-input { background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:var(--sans); font-size:12px; padding:4px 10px; width:180px; transition:border .15s; }
-.result-input:focus { outline:none; border-color:var(--accent); }
-.result-input::placeholder { color:var(--muted); }
-.ts-label { font-family:var(--mono); font-size:10px; color:var(--muted); white-space:nowrap; }
+.empty{text-align:center;padding:32px;color:var(--muted);font-family:var(--mono);font-size:12px}
 
-/* EMPTY */
-.empty { text-align:center; padding:40px; color:var(--muted); font-family:var(--mono); font-size:12px; }
+footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10px;
+  color:var(--muted);border-top:1px solid var(--border);letter-spacing:1px}
 
-/* FOOTER */
-footer { text-align:center; padding:24px; font-family:var(--mono); font-size:10px; color:var(--muted); border-top:1px solid var(--border); letter-spacing:1px; }
-
-@media(max-width:700px) {
-  .kpi-bar { padding:10px 16px; gap:8px; }
-  .main { padding:16px; }
-  th:nth-child(3), td:nth-child(3) { display:none; }
-  .result-input { width:120px; }
+/* DESKTOP: tabla clásica en pantallas anchas */
+@media(min-width:700px){
+  .cards{display:none}
+  .dtable{display:table;width:100%;border-collapse:collapse}
+  .dtable thead tr{border-bottom:1px solid var(--border)}
+  .dtable th{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--muted);padding:8px 12px;text-align:left;font-weight:500}
+  .dtable tbody tr{border-bottom:1px solid rgba(46,51,80,.5);transition:background .1s}
+  .dtable tbody tr:hover{background:var(--accent-dim)}
+  .dtable tbody tr.done{opacity:.45}
+  .dtable tbody tr.done .td-name{text-decoration:line-through;color:var(--muted)}
+  .dtable td{padding:10px 12px;vertical-align:middle}
+  .td-name{font-weight:500;font-size:13px}
+  .td-saldo{font-family:var(--mono);font-size:12px;color:#a5b4fc}
+  .td-mora{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .visit-cell{display:flex;align-items:center;gap:8px}
+  .dt-chk{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+  .dt-result{background:var(--surface2);border:1px solid var(--border);border-radius:6px;
+    color:var(--text);font-family:var(--sans);font-size:12px;padding:5px 10px;width:200px;transition:border .15s}
+  .dt-result:focus{outline:none;border-color:var(--accent)}
+  .dt-result::placeholder{color:var(--muted)}
+  .dt-ts{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+  .filter-bar{top:61px}
+}
+@media(max-width:699px){
+  .dtable{display:none}
+  .hdr{top:0}
+  .filter-bar{top:53px}
 }
 </style>
 </head>
 <body>
 
 <header class="hdr">
-  <div class="hdr-left">
-    <span class="hdr-tag">Préstamos Relámpago · Carrizo 065</span>
-    <span class="hdr-title">Plan de Cobranza</span>
-    <span class="hdr-date">Lunes 01 Junio 2026</span>
+  <div>
+    <div class="hdr-tag">Carrizo 065</div>
+    <div class="hdr-title">Plan de Cobranza</div>
   </div>
-  <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right">
-    Gerente: Miguel Portilla<br>
-    <span id="last-update" style="font-size:10px"></span>
+  <div class="hdr-date">
+    Lunes 01 Junio 2026<br>
+    <span id="last-save"></span>
   </div>
 </header>
 
-<div class="kpi-bar">
+<div class="kpi-strip">
   <div class="kpi">
-    <span class="kpi-label">1-30 días</span>
-    <span class="kpi-val" style="color:#ef4444">14.2%</span>
-    <span class="kpi-meta">meta &lt;10% 🔴</span>
+    <div class="kpi-label">1-30 días</div>
+    <div class="kpi-val" style="color:#ef4444">14.2%</div>
+    <div class="kpi-meta">meta &lt;10% 🔴</div>
   </div>
   <div class="kpi">
-    <span class="kpi-label">31-60 días</span>
-    <span class="kpi-val" style="color:#ef4444">4.9%</span>
-    <span class="kpi-meta">meta &lt;1.5% 🔴</span>
+    <div class="kpi-label">31-60 días</div>
+    <div class="kpi-val" style="color:#ef4444">4.9%</div>
+    <div class="kpi-meta">meta &lt;1.5% 🔴</div>
   </div>
   <div class="kpi">
-    <span class="kpi-label">31-150 días</span>
-    <span class="kpi-val" style="color:#ef4444">17.3%</span>
-    <span class="kpi-meta">meta &lt;6.9% 🔴</span>
+    <div class="kpi-label">31-150 días</div>
+    <div class="kpi-val" style="color:#ef4444">17.3%</div>
+    <div class="kpi-meta">meta &lt;6.9% 🔴</div>
   </div>
 </div>
 
 <div class="filter-bar">
   <span class="filter-label">GESTOR:</span>
-  <button class="filter-btn active" onclick="filtrar('todos')">Todos</button>
-  <button class="filter-btn" onclick="filtrar('eduardo')">Eduardo</button>
-  <button class="filter-btn" onclick="filtrar('gerardo')">Gerardo</button>
-  <span class="progress-summary" id="progress-summary"></span>
+  <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
+  <button class="filter-btn" onclick="filtrar('eduardo',this)">Eduardo</button>
+  <button class="filter-btn" onclick="filtrar('gerardo',this)">Gerardo</button>
+  <span class="progress" id="prog"></span>
 </div>
 
-<main class="main" id="main-content">
-</main>
+<main class="main" id="main"></main>
 
-<footer>Generado · Lunes 01 Junio 2026 · Carrizo 065 · Los registros se guardan en este dispositivo</footer>
+<footer>Carrizo 065 · Lunes 01 Junio 2026 · Datos guardados en este dispositivo</footer>
 
 <script>
 const DATA = [{"id": 0, "gestor": "nan", "nombre": "VERONICA AVILES RESENDIZ", "saldo": 813.13, "mora": 9, "promesa": "", "prioridad": "P4", "sub": "9d"}, {"id": 1, "gestor": "nan", "nombre": "JESSICA LIZETH OSORIO VILLEGAS", "saldo": 856.79, "mora": 10, "promesa": "", "prioridad": "P4", "sub": "10d"}, {"id": 2, "gestor": "nan", "nombre": "MARCO ANTONIO ESPINO DE LA CRUZ", "saldo": 1555.6, "mora": 10, "promesa": "", "prioridad": "P4", "sub": "10d"}, {"id": 3, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "GABY NOELIA LOPEZ ANDRADE", "saldo": 968.66, "mora": 11, "promesa": "", "prioridad": "P4", "sub": "11d"}, {"id": 4, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "SANJUANA MARIA AVILES PUENTE", "saldo": 4182.51, "mora": 12, "promesa": "", "prioridad": "P4", "sub": "12d"}, {"id": 5, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ROBERTO DORADO CAMPOS", "saldo": 3984.88, "mora": 12, "promesa": "SI", "prioridad": "P4", "sub": "12d"}, {"id": 6, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "LORENA ALEJANDRA HERNANDEZ MEDINA", "saldo": 2149.66, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 7, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JUAN ESTEBAN FUNES OVANDO", "saldo": 965.41, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 8, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "RODRIGO RODRIGUEZ REYES", "saldo": 1040.35, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 9, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JAVIER RUBEN CHAVEZ MARTINEZ", "saldo": 781.07, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 10, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "LETICIA GONZALEZ GUERRA", "saldo": 6752.02, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 11, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JOSE ANGEL MUÑOZ RAMIREZ", "saldo": 3478.67, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 12, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIO ROLANDO SANDOVAL ZAMORA", "saldo": 4241.1, "mora": 16, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 13, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSALIA RAMIREZ MENDEZ", "saldo": 1410.18, "mora": 16, "promesa": "SI", "prioridad": "P3", "sub": "16d"}, {"id": 14, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "VELIA GARCIA ZAPATA", "saldo": 102.78, "mora": 18, "promesa": "", "prioridad": "P3", "sub": "18d"}, {"id": 15, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ANA MONSERRAT LIZAMA WIDALES", "saldo": 2082.25, "mora": 19, "promesa": "", "prioridad": "P3", "sub": "19d"}, {"id": 16, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ANGELICA LOPEZ CASTILLO", "saldo": 1944.06, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 17, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "FABIO CAMARGO PALMA", "saldo": 565.95, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 18, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "RAMIRO GUADALUPE HERNANDEZ CEDILLO", "saldo": 883.15, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 19, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JOSE FRANCISCO MORALES GONZALEZ", "saldo": 1211.64, "mora": 21, "promesa": "SI", "prioridad": "P3", "sub": "21d"}, {"id": 20, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "VEDA ORDOÑEZ ALFARO", "saldo": 1934.56, "mora": 23, "promesa": "", "prioridad": "P2", "sub": "23d"}, {"id": 21, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSALINDA ZAVALA MARTINEZ", "saldo": 2785.92, "mora": 24, "promesa": "SI", "prioridad": "P2", "sub": "24d"}, {"id": 22, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "MARIA MAGDALENA MEDRANO MORALES", "saldo": 3522.18, "mora": 25, "promesa": "", "prioridad": "P2", "sub": "25d"}, {"id": 23, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JESUS CERVANTES RODRIGUEZ", "saldo": 1883.1, "mora": 25, "promesa": "", "prioridad": "P2", "sub": "25d"}, {"id": 24, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "CESAR ALEJANDRO PINEDA HERNANDEZ", "saldo": 6149.6, "mora": 27, "promesa": "SI", "prioridad": "P2", "sub": "27d"}, {"id": 25, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JOSE LUIS GARCIA HERNANDEZ", "saldo": 2072.56, "mora": 27, "promesa": "", "prioridad": "P2", "sub": "27d"}, {"id": 26, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "MARIA GUADALUPE PERALES CASTILLO", "saldo": 1941.55, "mora": 27, "promesa": "", "prioridad": "P2", "sub": "27d"}, {"id": 27, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "GUADALUPE MARTINEZ SALAZAR", "saldo": 3663.33, "mora": 30, "promesa": "", "prioridad": "P2", "sub": "30d"}, {"id": 28, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "FRANCISCO JAVIER CASTELLANOS GIL", "saldo": 8166.58, "mora": 31, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 29, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIA ISABEL VARGAS CAMPOS", "saldo": 2347.66, "mora": 58, "promesa": "", "prioridad": "P1", "sub": "58d"}, {"id": 30, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "CAROLINA VALADEZ RODRIGUEZ", "saldo": 2489.85, "mora": 37, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 31, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ALEJANDRA AVILA LEZAMA", "saldo": 4053.6, "mora": 52, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 32, "gestor": "RECOVERY 60", "nombre": "JOSE IVAN HERNANDEZ HINOJOSA", "saldo": 2319.19, "mora": 56, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 33, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ERIKA NOEMI GUERRERO ESPINOZA", "saldo": 2004.98, "mora": 33, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 34, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ESMERALDA CARBAJAL CASTILLO", "saldo": 4971.5, "mora": 51, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 35, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "SERGIO GUADALUPE LIZAMA WIDALES", "saldo": 2611.22, "mora": 32, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 36, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ARMANDO HERNANDEZ PADILLA", "saldo": 8672.7, "mora": 55, "promesa": "", "prioridad": "P1", "sub": "55d"}, {"id": 37, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ISRAEL LOPEZ RODRIGUEZ", "saldo": 2079.13, "mora": 38, "promesa": "SI", "prioridad": "P1", "sub": "38d"}, {"id": 38, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSA MARIA IBARRA GARZA", "saldo": 3499.43, "mora": 32, "promesa": "SI", "prioridad": "P1", "sub": "32d"}, {"id": 39, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "EVANGELINA CONTRERAS GAMEZ", "saldo": 2151.27, "mora": 35, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 40, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JOSE GABRIEL GONZALEZ HINOJOSA", "saldo": 6664.1, "mora": 51, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 41, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "AMERICO FLORENTINO HERNANDEZ QUINTERO", "saldo": 8893.36, "mora": 37, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 42, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ROSA IRMA DUARTE SANDOVAL", "saldo": 7159.27, "mora": 42, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 43, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIA PASCUALA MATEO BAUTISTA", "saldo": 7460.84, "mora": 60, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 47, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ISMAEL CHAVEZ RUIZ", "saldo": 17843.99, "mora": 62, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 49, "gestor": "RECOVERY 60", "nombre": "ROBERTO GATICA GIL", "saldo": 10106.27, "mora": 88, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}];
-const STORAGE_KEY = 'carrizo_20260601';
-
-const PRIO_CFG = {
-  P1: { label:'P1 — COBRO INMEDIATO',    desc:'31-60d · Promesas hoy · Rotas',   cls:'P1' },
-  P2: { label:'P2 — PROMESAR HOY',        desc:'22-30 días',                       cls:'P2' },
-  P3: { label:'P3 — PRÓXIMA SEMANA',      desc:'15-21 días',                       cls:'P3' },
-  P4: { label:'P4 — GESTIÓN TEMPRANA',    desc:'8-14 días',                        cls:'P4' },
+const KEY  = 'carrizo_20260601';
+const PCFG = {
+  P1:{title:'COBRO INMEDIATO', desc:'31-60d · Promesas hoy · Rotas'},
+  P2:{title:'PROMESAR HOY',    desc:'22-30 días'},
+  P3:{title:'PRÓXIMA SEMANA',  desc:'15-21 días'},
+  P4:{title:'GESTIÓN TEMPRANA',desc:'8-14 días'},
 };
 
-let estado = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-let filtroActual = 'todos';
+let estado = {};
+try { estado = JSON.parse(localStorage.getItem(KEY)||'{}'); } catch(e){}
+let filtro = 'todos';
 
-function guardar() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
-  const ts = new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'});
-  document.getElementById('last-update').textContent = 'Guardado ' + ts;
-  actualizarProgreso();
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(estado)); } catch(e){}
+  const t = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  const el = document.getElementById('last-save');
+  if(el) el.textContent = '✓ ' + t;
+  updateProg();
 }
 
-function actualizarProgreso() {
-  const visible = DATA.filter(r => filtroActual === 'todos' || r.gestor.toLowerCase().includes(filtroActual));
-  const visitadas = visible.filter(r => estado[r.id]?.visitado).length;
-  const el = document.getElementById('progress-summary');
-  el.innerHTML = `Visitadas: <b>${visitadas}</b> / ${visible.length}`;
+function updateProg() {
+  const vis = DATA.filter(r => filtro==='todos' || r.gestor.toLowerCase().includes(filtro));
+  const done = vis.filter(r => estado[r.id]?.v).length;
+  document.getElementById('prog').innerHTML = `Visitadas: <b>${done}</b>/${vis.length}`;
 }
 
 function tagSub(sub) {
-  if (sub === 'PROMESA HOY') return '<span class="tag tag-hoy">✅ HOY</span>';
-  if (sub === 'ROTA')        return '<span class="tag tag-rota">⚠ ROTA</span>';
-  if (sub.endsWith('d'))     return `<span class="tag tag-mora">${sub}</span>`;
-  return '';
+  if(sub==='PROMESA HOY') return '<span class="tag tag-hoy">✅ HOY</span>';
+  if(sub==='ROTA')        return '<span class="tag tag-rota">⚠ ROTA</span>';
+  return `<span class="tag tag-mora">${sub}</span>`;
 }
-
-function tagPromesa(p) {
-  if (p === 'ROTA') return '<span class="tag tag-rota">ROTA</span>';
-  if (p === 'SI')   return '<span class="tag tag-si">✓ Promesa</span>';
+function tagProm(p) {
+  if(p==='ROTA') return '<span class="tag tag-rota">ROTA</span>';
+  if(p==='SI')   return '<span class="tag tag-si">✓ Promesa</span>';
   return '<span class="tag tag-no">Sin promesa</span>';
 }
 
-function renderTabla(datos) {
-  if (!datos.length) return '<p class="empty">Sin cuentas en este rango</p>';
-  return `<table>
+function toggleV(id, chk) {
+  if(!estado[id]) estado[id]={};
+  estado[id].v = chk;
+  estado[id].ts = chk ? new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}) : null;
+  // update card
+  ['card','drow'].forEach(prefix => {
+    const el = document.getElementById(prefix+'-'+id);
+    if(!el) return;
+    el.className = el.className.replace(' done','') + (chk?' done':'');
+  });
+  // update ts labels
+  document.querySelectorAll('.ts-'+id).forEach(el => el.textContent = chk?(estado[id].ts||''):'');
+  save();
+}
+
+function saveRes(id, val) {
+  if(!estado[id]) estado[id]={};
+  estado[id].r = val;
+  save();
+}
+
+function renderCards(datos) {
+  if(!datos.length) return '<p class="empty">Sin cuentas en este rango.</p>';
+  return '<div class="cards">' + datos.map(r => {
+    const s   = estado[r.id]||{};
+    const chk = s.v?'checked':'';
+    const res = s.r||'';
+    const ts  = s.ts||'';
+    const gestorTag = filtro==='todos' ? `<span class="tag tag-gestor">${r.gestor.split(' ')[0]}</span>` : '';
+    return `<div class="card${s.v?' done':''}" id="card-${r.id}">
+      <div class="card-top">
+        <input type="checkbox" class="card-chk" ${chk} onchange="toggleV(${r.id},this.checked)">
+        <div class="card-info">
+          <div class="card-name">${r.nombre}</div>
+          <div class="card-meta">
+            <span class="card-saldo">$${r.saldo.toLocaleString('es-MX',{minimumFractionDigits:0})}</span>
+            ${tagSub(r.sub)} ${tagProm(r.promesa)} ${gestorTag}
+            <span class="card-ts ts-${r.id}">${ts}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-result">
+        <input type="text" placeholder="Resultado de la gestión..." value="${res}"
+          oninput="saveRes(${r.id},this.value)">
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function renderTable(datos) {
+  if(!datos.length) return '<p class="empty">Sin cuentas en este rango.</p>';
+  const gestorCol = filtro==='todos';
+  return `<table class="dtable">
     <thead><tr>
-      <th>Cliente</th><th>Saldo</th><th>Mora</th><th>Estado</th><th>Visitado / Resultado</th>
+      <th>Cliente</th><th>Saldo</th><th>Mora</th><th>Estado</th>
+      ${gestorCol?'<th>Gestor</th>':''}
+      <th>Visitado / Resultado</th>
     </tr></thead>
-    <tbody>
-      ${datos.map(r => {
-        const s = estado[r.id] || {};
-        const done = s.visitado ? 'done' : '';
-        const chk  = s.visitado ? 'checked' : '';
-        const res  = s.resultado || '';
-        const ts   = s.timestamp ? `<span class="ts-label">${s.timestamp}</span>` : '';
-        return `<tr class="${done}" id="row-${r.id}">
-          <td class="td-name">${r.nombre}</td>
-          <td class="td-saldo">$${r.saldo.toLocaleString('es-MX',{minimumFractionDigits:0})}</td>
-          <td class="td-mora">${r.mora}d</td>
-          <td>${tagSub(r.sub)} ${tagPromesa(r.promesa)}</td>
-          <td>
-            <div class="visit-cell">
-              <input type="checkbox" class="chk" ${chk}
-                onchange="toggleVisita(${r.id}, this.checked)">
-              <input type="text" class="result-input" placeholder="Resultado..."
-                value="${res}" oninput="guardarResultado(${r.id}, this.value)">
-              ${ts}
-            </div>
-          </td>
-        </tr>`;
-      }).join('')}
-    </tbody>
+    <tbody>${datos.map(r=>{
+      const s=estado[r.id]||{};
+      const chk=s.v?'checked':'';
+      const res=s.r||'';
+      const ts=s.ts||'';
+      return `<tr class="${s.v?'done':''}" id="drow-${r.id}">
+        <td class="td-name">${r.nombre}</td>
+        <td class="td-saldo">$${r.saldo.toLocaleString('es-MX',{minimumFractionDigits:0})}</td>
+        <td class="td-mora">${r.mora}d</td>
+        <td>${tagSub(r.sub)} ${tagProm(r.promesa)}</td>
+        ${gestorCol?`<td style="font-size:11px;color:var(--muted)">${r.gestor.split(' ')[0]}</td>`:''}
+        <td><div class="visit-cell">
+          <input type="checkbox" class="dt-chk" ${chk} onchange="toggleV(${r.id},this.checked)">
+          <input type="text" class="dt-result" placeholder="Resultado..." value="${res}"
+            oninput="saveRes(${r.id},this.value)">
+          <span class="dt-ts ts-${r.id}">${ts}</span>
+        </div></td>
+      </tr>`;
+    }).join('')}</tbody>
   </table>`;
 }
 
-function toggleVisita(id, checked) {
-  if (!estado[id]) estado[id] = {};
-  estado[id].visitado = checked;
-  if (checked) {
-    const now = new Date();
-    estado[id].timestamp = now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  } else {
-    delete estado[id].timestamp;
-  }
-  const row = document.getElementById('row-' + id);
-  if (row) row.className = checked ? 'done' : '';
-  const tsEl = row?.querySelector('.ts-label');
-  if (tsEl) tsEl.textContent = checked ? estado[id].timestamp : '';
-  guardar();
+function filtrar(g, btn) {
+  filtro = g;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  render();
 }
 
-function guardarResultado(id, valor) {
-  if (!estado[id]) estado[id] = {};
-  estado[id].resultado = valor;
-  guardar();
-}
-
-function filtrar(gestor) {
-  filtroActual = gestor;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  renderAll();
-}
-
-function renderAll() {
-  const filtered = filtroActual === 'todos'
-    ? DATA
-    : DATA.filter(r => r.gestor.toLowerCase().includes(filtroActual));
-
-  const prios = ['P1','P2','P3','P4'];
+function render() {
+  const fd = filtro==='todos' ? DATA : DATA.filter(r=>r.gestor.toLowerCase().includes(filtro));
   let html = '';
-  prios.forEach(p => {
-    const grupo = filtered.filter(r => r.prioridad === p);
-    if (!grupo.length) return;
-    const total = grupo.reduce((s,r) => s + r.saldo, 0);
-    const cfg = PRIO_CFG[p];
+  ['P1','P2','P3','P4'].forEach(p=>{
+    const g = fd.filter(r=>r.prioridad===p);
+    if(!g.length) return;
+    const tot = g.reduce((s,r)=>s+r.saldo,0);
+    const cfg = PCFG[p];
     html += `<div class="prio-block">
       <div class="prio-header">
-        <span class="prio-badge ${cfg.cls}">${p}</span>
-        <span style="font-weight:600;font-size:13px">${cfg.label.split('—')[1].trim()}</span>
+        <span class="prio-badge ${p}">${p}</span>
+        <span class="prio-title">${cfg.title}</span>
         <span class="prio-desc">${cfg.desc}</span>
-        <span class="prio-count">${grupo.length} cuentas · $${total.toLocaleString('es-MX',{minimumFractionDigits:0})}</span>
+        <span class="prio-count">${g.length} · $${tot.toLocaleString('es-MX',{minimumFractionDigits:0})}</span>
       </div>
-      ${renderTabla(grupo)}
+      ${renderCards(g)}
+      ${renderTable(g)}
     </div>`;
   });
-
-  if (!html) html = '<p class="empty">Sin cuentas para este gestor.</p>';
-  document.getElementById('main-content').innerHTML = html;
-  actualizarProgreso();
+  document.getElementById('main').innerHTML = html || '<p class="empty">Sin cuentas.</p>';
+  updateProg();
 }
 
-// Init
-renderAll();
+render();
 </script>
 </body>
 </html>
