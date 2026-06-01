@@ -3,308 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard Carrizo — LUNES 30 MARZO 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Cobranza Carrizo — Lunes 01 Junio 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f6f9;--surface:#fff;--border:#e2e8f0;--text:#1a202c;--muted:#718096;
-  --blue:#2563eb;--blue-l:#eff6ff;--sans:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
-  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --sh2:0 4px 12px rgba(0,0,0,.1),0 2px 4px rgba(0,0,0,.06)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5}
-.hdr{background:var(--blue);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh2)}
-.hdr-branch{font-size:11px;color:rgba(255,255,255,.65);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-bottom:3px}
-.hdr-title{font-size:20px;font-weight:700;color:#fff}
-.hdr-date{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.85);font-weight:500;text-align:right}
-.hdr-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
-.main{max-width:1200px;margin:0 auto;padding:28px 20px}
-.stitle{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.stitle::after{content:'';flex:1;height:1px;background:var(--border)}
-.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
-.kpi-card{background:var(--surface);border-radius:12px;padding:22px;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;cursor:default}
-.kpi-card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
-.kpi-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.kpi-value{font-family:var(--mono);font-size:38px;font-weight:700;line-height:1;margin-bottom:4px}
-.kpi-meta{font-size:12px;color:var(--muted);margin-bottom:12px}
-.kpi-bar-bg{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-bottom:12px}
-.kpi-bar{height:100%;border-radius:3px;transition:width .8s ease}
-.kpi-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.5px}
-.chart-card{background:var(--surface);border-radius:12px;padding:24px;box-shadow:var(--sh);margin-bottom:32px}
-.chart-ttl{font-size:13px;font-weight:600;margin-bottom:20px;color:var(--text)}
-.chart-hint{font-size:11px;color:var(--muted);font-weight:400;margin-left:8px}
-#cc{width:100%;height:210px;display:block;cursor:crosshair}
-.tip{position:fixed;background:#1a202c;color:#fff;padding:10px 14px;border-radius:8px;font-size:12px;
-  font-family:var(--mono);pointer-events:none;opacity:0;transition:opacity .12s;z-index:999;line-height:1.7;
-  box-shadow:0 4px 12px rgba(0,0,0,.3)}
-.ggrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
-.gcard{background:var(--surface);border-radius:12px;box-shadow:var(--sh);overflow:hidden;transition:box-shadow .15s}
-.gcard:hover{box-shadow:var(--sh2)}
-.ghdr{background:var(--blue-l);border-bottom:2px solid var(--blue);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.gname{font-size:17px;font-weight:700;color:var(--blue)}
-.gchips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.chip-b{background:#dbeafe;color:#1d4ed8}
-.chip-g{background:#f1f5f9;color:#475569;font-family:var(--mono)}
-.chip-o{background:#ffedd5;color:#c2410c}
-.pblock{padding:14px 18px;border-bottom:1px solid var(--border)}
-.pblock:last-child{border-bottom:none}
-.phead{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.pbadge{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;color:#fff;letter-spacing:1px;font-family:var(--mono)}
-.ptitle{font-size:12px;font-weight:700}
-.psub{font-size:11px;color:var(--muted)}
-.p-alerta{font-size:11px;color:#c2410c;font-weight:600;background:#ffedd5;padding:2px 8px;border-radius:4px;border:1px solid #fed7aa}
-.pcount{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
-.ptable{width:100%;border-collapse:collapse;font-size:12px}
-.ptable th{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
-.ptable tbody tr{transition:background .1s;cursor:default}
-.ptable tbody tr:hover{background:rgba(37,99,235,.05)}
-.ptable tbody tr:hover .td-n{color:var(--blue);font-weight:600}
-.ptable td{padding:7px 8px;border-bottom:1px solid #f7f8fa}
-.ptable tbody tr:last-child td{border-bottom:none}
-.td-n{font-weight:500}.td-s{font-family:var(--mono);color:#374151}.td-d{font-family:var(--mono);color:var(--muted)}
-.empty-row{text-align:center;color:var(--muted);padding:16px;font-style:italic;font-size:12px}
-.tb{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
-.tb-hoy{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
-.tb-rota{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
-.tb-si{background:#dcfce7;color:#166534;border:1px solid #86efac}
-.tb-no{background:#fef9c3;color:#854d0e;border:1px solid #fde047}
-.footer{text-align:center;padding:24px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);font-family:var(--mono)}
-@media(max-width:800px){.kpi-grid,.ggrid{grid-template-columns:1fr}.hdr{flex-direction:column;gap:8px}}
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #22263a;
+  --border: #2e3350;
+  --text: #e8eaf2;
+  --muted: #6b7280;
+  --accent: #6366f1;
+  --accent-dim: rgba(99,102,241,0.12);
+  --green: #22c55e;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --orange: #f97316;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; min-height:100vh; }
+
+/* HEADER */
+.hdr { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+.hdr-left { display:flex; flex-direction:column; gap:2px; }
+.hdr-tag { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; }
+.hdr-title { font-size:18px; font-weight:700; color:var(--text); }
+.hdr-date { font-family:var(--mono); font-size:11px; color:var(--muted); }
+
+/* KPI BAR */
+.kpi-bar { display:flex; gap:12px; flex-wrap:wrap; padding:12px 24px; background:var(--surface); border-bottom:1px solid var(--border); }
+.kpi { display:flex; flex-direction:column; gap:2px; padding:10px 16px; background:var(--surface2); border-radius:8px; border:1px solid var(--border); min-width:140px; }
+.kpi-label { font-size:10px; font-family:var(--mono); color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+.kpi-val { font-family:var(--mono); font-size:22px; font-weight:600; }
+.kpi-meta { font-size:10px; color:var(--muted); font-family:var(--mono); }
+
+/* FILTER BAR */
+.filter-bar { padding:12px 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--border); background:var(--bg); }
+.filter-label { font-size:11px; font-family:var(--mono); color:var(--muted); letter-spacing:1px; }
+.filter-btn { padding:6px 16px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:var(--mono); font-size:11px; cursor:pointer; transition:all .15s; }
+.filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+.filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.progress-summary { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--muted); }
+.progress-summary b { color:var(--green); }
+
+/* MAIN TABLE */
+.main { padding:20px 24px; }
+.section-title { font-family:var(--mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; padding-left:4px; display:flex; align-items:center; gap:10px; }
+.section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.prio-block { margin-bottom:24px; }
+.prio-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.prio-badge { font-family:var(--mono); font-size:10px; font-weight:600; padding:3px 10px; border-radius:4px; letter-spacing:1px; }
+.prio-badge.P1 { background:rgba(239,68,68,.15); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
+.prio-badge.P2 { background:rgba(249,115,22,.15); color:#f97316; border:1px solid rgba(249,115,22,.3); }
+.prio-badge.P3 { background:rgba(245,158,11,.15); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+.prio-badge.P4 { background:rgba(34,197,94,.15); color:#22c55e; border:1px solid rgba(34,197,94,.3); }
+.prio-desc { font-size:11px; color:var(--muted); }
+.prio-count { font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto; }
+
+table { width:100%; border-collapse:collapse; }
+thead tr { border-bottom:1px solid var(--border); }
+th { font-family:var(--mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); padding:8px 12px; text-align:left; font-weight:500; }
+tbody tr { border-bottom:1px solid rgba(46,51,80,.5); transition:background .1s; }
+tbody tr:hover { background:var(--accent-dim); }
+tbody tr.done { opacity:.45; }
+tbody tr.done td.td-name { text-decoration:line-through; color:var(--muted); }
+td { padding:10px 12px; vertical-align:middle; }
+.td-name { font-weight:500; font-size:13px; }
+.td-saldo { font-family:var(--mono); font-size:12px; color:#a5b4fc; }
+.td-mora { font-family:var(--mono); font-size:12px; color:var(--muted); }
+
+.tag { display:inline-block; padding:2px 8px; border-radius:4px; font-family:var(--mono); font-size:10px; font-weight:500; white-space:nowrap; }
+.tag-hoy { background:rgba(34,197,94,.15); color:#22c55e; border:1px solid rgba(34,197,94,.3); }
+.tag-rota { background:rgba(239,68,68,.15); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
+.tag-si { background:rgba(99,102,241,.15); color:#a5b4fc; border:1px solid rgba(99,102,241,.3); }
+.tag-no { background:rgba(107,114,128,.1); color:var(--muted); border:1px solid var(--border); }
+.tag-mora { background:rgba(249,115,22,.1); color:#f97316; border:1px solid rgba(249,115,22,.3); }
+
+/* VISIT CELL */
+.visit-cell { display:flex; align-items:center; gap:8px; }
+.chk { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+.result-input { background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:var(--sans); font-size:12px; padding:4px 10px; width:180px; transition:border .15s; }
+.result-input:focus { outline:none; border-color:var(--accent); }
+.result-input::placeholder { color:var(--muted); }
+.ts-label { font-family:var(--mono); font-size:10px; color:var(--muted); white-space:nowrap; }
+
+/* EMPTY */
+.empty { text-align:center; padding:40px; color:var(--muted); font-family:var(--mono); font-size:12px; }
+
+/* FOOTER */
+footer { text-align:center; padding:24px; font-family:var(--mono); font-size:10px; color:var(--muted); border-top:1px solid var(--border); letter-spacing:1px; }
+
+@media(max-width:700px) {
+  .kpi-bar { padding:10px 16px; gap:8px; }
+  .main { padding:16px; }
+  th:nth-child(3), td:nth-child(3) { display:none; }
+  .result-input { width:120px; }
+}
 </style>
 </head>
 <body>
+
 <header class="hdr">
-  <div>
-    <div class="hdr-branch">Préstamos Relámpago · Sucursal Carrizo 065</div>
-    <div class="hdr-title">Dashboard de Cobranza</div>
+  <div class="hdr-left">
+    <span class="hdr-tag">Préstamos Relámpago · Carrizo 065</span>
+    <span class="hdr-title">Plan de Cobranza</span>
+    <span class="hdr-date">Lunes 01 Junio 2026</span>
   </div>
-  <div>
-    <div class="hdr-date">LUNES 30 MARZO 2026</div>
-    <div class="hdr-sub">Gerente: Miguel Portilla</div>
+  <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right">
+    Gerente: Miguel Portilla<br>
+    <span id="last-update" style="font-size:10px"></span>
   </div>
 </header>
-<main class="main">
-  <div class="stitle">Métricas de Cartera</div>
-  <div class="kpi-grid">
-    <div class="kpi-card" style="border-top:4px solid #e74c3c;background:#fef0f0">
-          <div class="kpi-label">Cartera 1-30 días</div>
-          <div class="kpi-value" style="color:#c0392b">19.8%</div>
-          <div class="kpi-meta">Meta: <10%</div>
-          <div class="kpi-bar-bg"><div class="kpi-bar" style="width:99%;background:#e74c3c"></div></div>
-          <span class="kpi-badge" style="background:#e74c3c">✕ CRÍTICO</span>
-        </div>
-    <div class="kpi-card" style="border-top:4px solid #e74c3c;background:#fef0f0">
-          <div class="kpi-label">Cartera 31-60 días</div>
-          <div class="kpi-value" style="color:#c0392b">6.1%</div>
-          <div class="kpi-meta">Meta: <1.5%</div>
-          <div class="kpi-bar-bg"><div class="kpi-bar" style="width:100%;background:#e74c3c"></div></div>
-          <span class="kpi-badge" style="background:#e74c3c">✕ CRÍTICO</span>
-        </div>
-    <div class="kpi-card" style="border-top:4px solid #e74c3c;background:#fef0f0">
-          <div class="kpi-label">Cartera 31-150 días</div>
-          <div class="kpi-value" style="color:#c0392b">11.6%</div>
-          <div class="kpi-meta">Meta: <6.90%</div>
-          <div class="kpi-bar-bg"><div class="kpi-bar" style="width:84%;background:#e74c3c"></div></div>
-          <span class="kpi-badge" style="background:#e74c3c">✕ CRÍTICO</span>
-        </div>
+
+<div class="kpi-bar">
+  <div class="kpi">
+    <span class="kpi-label">1-30 días</span>
+    <span class="kpi-val" style="color:#ef4444">14.2%</span>
+    <span class="kpi-meta">meta &lt;10% 🔴</span>
   </div>
-  <div class="stitle">Distribución de Mora</div>
-  <div class="chart-card">
-    <div class="chart-ttl">Cuentas por bucket de mora <span class="chart-hint">— hover sobre las barras para ver detalle</span></div>
-    <canvas id="cc"></canvas>
+  <div class="kpi">
+    <span class="kpi-label">31-60 días</span>
+    <span class="kpi-val" style="color:#ef4444">4.9%</span>
+    <span class="kpi-meta">meta &lt;1.5% 🔴</span>
   </div>
-  <div class="tip" id="tip"></div>
-  <div class="stitle">Plan de Cobranza por Gestor</div>
-  <div class="ggrid">
-        <div class="gcard">
-          <div class="ghdr">
-            <span class="gname">Eduardo</span>
-            <div class="gchips">
-              <span class="chip chip-b">24 cuentas</span>
-              <span class="chip chip-g">$90,674</span>
-              <span class="chip chip-o">46.2% del total</span>
-            </div>
-          </div>
-          
-            <div class="pblock" style="border-left:3px solid #e74c3c;background:#fef0f0">
-              <div class="phead">
-                <span class="pbadge" style="background:#e74c3c">P1</span>
-                <span class="ptitle">COBRO INMEDIATO</span>
-                <span class="psub">31-60d + Promesas HOY + Rotas</span>
-                
-                <span class="pcount">16 cuentas · $81,495</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">ROSALINDA ZAVALA MARTINEZ</td><td class="td-s">$3,359</td><td class="td-d">24d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">SANJUANA MARIA AVILES PUENTE</td><td class="td-s">$2,757</td><td class="td-d">12d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">MARIA GUADALUPE PERALES CASTILLO</td><td class="td-s">$1,384</td><td class="td-d">20d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">BARTOLO TURRUBIATES MALDONADO</td><td class="td-s">$8,366</td><td class="td-d">42d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">CARLOS GARAY CRUZ</td><td class="td-s">$6,227</td><td class="td-d">48d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ROSA MARIA IBARRA GARZA</td><td class="td-s">$5,377</td><td class="td-d">39d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ANGEL ARTURO GUEL COVARRUBIAS</td><td class="td-s">$4,781</td><td class="td-d">41d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ROSALIA RAMIREZ MENDEZ</td><td class="td-s">$3,539</td><td class="td-d">44d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ESMERALDA CARBAJAL CASTILLO</td><td class="td-s">$3,245</td><td class="td-d">37d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ROSA IRMA DUARTE SANDOVAL</td><td class="td-s">$3,179</td><td class="td-d">11d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">BENJAMIN GUZMAN PALACIOS</td><td class="td-s">$1,630</td><td class="td-d">28d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">FERNANDO IVAN DOMINGUEZ SIERRA</td><td class="td-s">$749</td><td class="td-d">10d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">LUIS ALBERTO MATA LOPEZ</td><td class="td-s">$11,737</td><td class="td-d">52d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">JOSE ALFREDO TREJO RICO</td><td class="td-s">$9,137</td><td class="td-d">55d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">SANTIAGO GONZALEZ FUENTES</td><td class="td-s">$8,090</td><td class="td-d">56d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">ROQUE LLANOS CERVANTES</td><td class="td-s">$7,937</td><td class="td-d">60d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pblock" style="border-left:3px solid #e67e22;background:#fff5ec">
-              <div class="phead">
-                <span class="pbadge" style="background:#e67e22">P2</span>
-                <span class="ptitle">PROMESAR ANTES QUE IMPACTEN</span>
-                <span class="psub">22-30 días</span>
-                <span class="p-alerta">⚠ 2 sin promesa</span>
-                <span class="pcount">5 cuentas · $9,620</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">BENJAMIN GUZMAN PALACIOS</td><td class="td-s">$1,630</td><td class="td-d">28d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ELIZABETH GUTIERREZ ZAPATA</td><td class="td-s">$2,392</td><td class="td-d">28d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">ROSALINDA ZAVALA MARTINEZ</td><td class="td-s">$3,359</td><td class="td-d">24d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr><tr><td class="td-n">MARIA ISABEL VARGAS CAMPOS</td><td class="td-s">$800</td><td class="td-d">23d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr><tr><td class="td-n">CAROLINA VALADEZ RODRIGUEZ</td><td class="td-s">$1,438</td><td class="td-d">23d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pblock" style="border-left:3px solid #f39c12;background:#fffaec">
-              <div class="phead">
-                <span class="pbadge" style="background:#f39c12">P3</span>
-                <span class="ptitle">IMPACTAN PRÓXIMA SEMANA</span>
-                <span class="psub">15-21 días</span>
-                
-                <span class="pcount">1 cuentas · $1,384</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">MARIA GUADALUPE PERALES CASTILLO</td><td class="td-s">$1,384</td><td class="td-d">20d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pblock" style="border-left:3px solid #27ae60;background:#edfaf4">
-              <div class="phead">
-                <span class="pbadge" style="background:#27ae60">P4</span>
-                <span class="ptitle">GESTIÓN TEMPRANA</span>
-                <span class="psub">8-14 días</span>
-                <span class="p-alerta">⚠ 5 sin promesa</span>
-                <span class="pcount">8 cuentas · $11,235</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">SANJUANA MARIA AVILES PUENTE</td><td class="td-s">$2,757</td><td class="td-d">12d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr><tr><td class="td-n">ANA MONSERRAT LIZAMA WIDALES</td><td class="td-s">$1,079</td><td class="td-d">12d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">ROSA IRMA DUARTE SANDOVAL</td><td class="td-s">$3,179</td><td class="td-d">11d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">JESSICA LIZETH OSORIO VILLEGAS</td><td class="td-s">$1,238</td><td class="td-d">11d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">BRENDA GUADALUPE DE LA CRUZ PACHECO</td><td class="td-s">$496</td><td class="td-d">10d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">FERNANDO IVAN DOMINGUEZ SIERRA</td><td class="td-s">$749</td><td class="td-d">10d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ISRAEL LOPEZ RODRIGUEZ</td><td class="td-s">$378</td><td class="td-d">10d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">ANGELICA LOPEZ CASTILLO</td><td class="td-s">$1,360</td><td class="td-d">10d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr></tbody>
-              </table>
-            </div>
-        </div>
-        <div class="gcard">
-          <div class="ghdr">
-            <span class="gname">Gerardo</span>
-            <div class="gchips">
-              <span class="chip chip-b">24 cuentas</span>
-              <span class="chip chip-g">$105,421</span>
-              <span class="chip chip-o">53.8% del total</span>
-            </div>
-          </div>
-          
-            <div class="pblock" style="border-left:3px solid #e74c3c;background:#fef0f0">
-              <div class="phead">
-                <span class="pbadge" style="background:#e74c3c">P1</span>
-                <span class="ptitle">COBRO INMEDIATO</span>
-                <span class="psub">31-60d + Promesas HOY + Rotas</span>
-                
-                <span class="pcount">13 cuentas · $70,941</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">BRENDA NATALY GALVAN ORTIZ</td><td class="td-s">$20,469</td><td class="td-d">32d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">JHONATAN SARAO MENDEZ</td><td class="td-s">$5,865</td><td class="td-d">45d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">MARIA JUANA YOLANDA GUTIERREZ GUTIERREZ</td><td class="td-s">$4,956</td><td class="td-d">19d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">MARIA MAGDALENA MEDRANO MORALES</td><td class="td-s">$3,502</td><td class="td-d">23d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">JOSE GABRIEL GONZALEZ HINOJOSA</td><td class="td-s">$2,969</td><td class="td-d">19d</td><td><span class="tb tb-hoy">✅ HOY</span></td></tr><tr><td class="td-n">MARIA VICTORIA VIGIL GRIMALDO</td><td class="td-s">$6,873</td><td class="td-d">27d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">JOSE HUMBERTO PALOS MONCADA</td><td class="td-s">$6,083</td><td class="td-d">47d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">JUAN VALENTIN ZAVALA PEREZ</td><td class="td-s">$5,482</td><td class="td-d">56d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ALFREDO GARCIA MENDOZA</td><td class="td-s">$4,625</td><td class="td-d">42d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">LESLI ITZAMARA DUARTE REYES</td><td class="td-s">$3,024</td><td class="td-d">32d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">OSCAR DANIEL SANCHEZ AGUILAR</td><td class="td-s">$1,316</td><td class="td-d">34d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">NOHEMI HERNANDEZ GUERRERO</td><td class="td-s">$3,318</td><td class="td-d">54d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">JOSE IVAN HERNANDEZ HINOJOSA</td><td class="td-s">$2,459</td><td class="td-d">56d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pblock" style="border-left:3px solid #e67e22;background:#fff5ec">
-              <div class="phead">
-                <span class="pbadge" style="background:#e67e22">P2</span>
-                <span class="ptitle">PROMESAR ANTES QUE IMPACTEN</span>
-                <span class="psub">22-30 días</span>
-                <span class="p-alerta">⚠ 2 sin promesa</span>
-                <span class="pcount">4 cuentas · $21,200</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">ISMAEL CHAVEZ RUIZ</td><td class="td-s">$5,334</td><td class="td-d">27d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">MARIA VICTORIA VIGIL GRIMALDO</td><td class="td-s">$6,873</td><td class="td-d">27d</td><td><span class="tb tb-rota">⚠ ROTA</span></td></tr><tr><td class="td-n">ANGEL ISRAEL CHAVEZ GARCIA</td><td class="td-s">$5,491</td><td class="td-d">25d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">MARIA MAGDALENA MEDRANO MORALES</td><td class="td-s">$3,502</td><td class="td-d">23d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pblock" style="border-left:3px solid #f39c12;background:#fffaec">
-              <div class="phead">
-                <span class="pbadge" style="background:#f39c12">P3</span>
-                <span class="ptitle">IMPACTAN PRÓXIMA SEMANA</span>
-                <span class="psub">15-21 días</span>
-                <span class="p-alerta">⚠ 2 sin promesa</span>
-                <span class="pcount">4 cuentas · $12,153</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">MARIA JUANA YOLANDA GUTIERREZ GUTIERREZ</td><td class="td-s">$4,956</td><td class="td-d">19d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr><tr><td class="td-n">JOSE GABRIEL GONZALEZ HINOJOSA</td><td class="td-s">$2,969</td><td class="td-d">19d</td><td><span class="tb tb-si">✓ Promesa</span></td></tr><tr><td class="td-n">SERGIO GUADALUPE LIZAMA WIDALES</td><td class="td-s">$1,331</td><td class="td-d">18d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">AMERICO FLORENTINO HERNANDEZ QUINTERO</td><td class="td-s">$2,898</td><td class="td-d">16d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr></tbody>
-              </table>
-            </div>
-            <div class="pblock" style="border-left:3px solid #27ae60;background:#edfaf4">
-              <div class="phead">
-                <span class="pbadge" style="background:#27ae60">P4</span>
-                <span class="ptitle">GESTIÓN TEMPRANA</span>
-                <span class="psub">8-14 días</span>
-                <span class="p-alerta">⚠ 7 sin promesa</span>
-                <span class="pcount">7 cuentas · $19,428</span>
-              </div>
-              <table class="ptable">
-                <thead><tr><th>Cliente</th><th>Saldo</th><th>Días</th><th>Estado</th></tr></thead>
-                <tbody><tr><td class="td-n">MARIO ROLANDO SANDOVAL ZAMORA</td><td class="td-s">$4,217</td><td class="td-d">14d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">VERONICA LETICIA CAZARES RAMIREZ</td><td class="td-s">$6,388</td><td class="td-d">14d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">ALEXIS ELIZABETH VICENTE MARTINEZ</td><td class="td-s">$919</td><td class="td-d">13d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">JOSE ANGEL MUÑOZ RAMIREZ</td><td class="td-s">$3,467</td><td class="td-d">13d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">EULOGIO MORENO VALDEZ</td><td class="td-s">$579</td><td class="td-d">9d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">VERONICA AVILES RESENDIZ</td><td class="td-s">$921</td><td class="td-d">9d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr><tr><td class="td-n">LEODEGARIO MENDEZ GARCIA</td><td class="td-s">$2,938</td><td class="td-d">9d</td><td><span class="tb tb-no">✗ Sin promesa</span></td></tr></tbody>
-              </table>
-            </div>
-        </div></div>
+  <div class="kpi">
+    <span class="kpi-label">31-150 días</span>
+    <span class="kpi-val" style="color:#ef4444">17.3%</span>
+    <span class="kpi-meta">meta &lt;6.9% 🔴</span>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">GESTOR:</span>
+  <button class="filter-btn active" onclick="filtrar('todos')">Todos</button>
+  <button class="filter-btn" onclick="filtrar('eduardo')">Eduardo</button>
+  <button class="filter-btn" onclick="filtrar('gerardo')">Gerardo</button>
+  <span class="progress-summary" id="progress-summary"></span>
+</div>
+
+<main class="main" id="main-content">
 </main>
-<footer class="footer">Generado automáticamente · LUNES 30 MARZO 2026 · Carrizo 065 · Préstamos Relámpago</footer>
+
+<footer>Generado · Lunes 01 Junio 2026 · Carrizo 065 · Los registros se guardan en este dispositivo</footer>
+
 <script>
-const dist=[{"label": "1-7d", "cuentas": 0, "saldo": 0.0, "color": "#27ae60"}, {"label": "8-14d", "cuentas": 15, "saldo": 30662.539999999997, "color": "#52be80"}, {"label": "15-21d", "cuentas": 5, "saldo": 13537.039999999999, "color": "#f39c12"}, {"label": "22-30d", "cuentas": 9, "saldo": 30819.570000000007, "color": "#e67e22"}, {"label": "31-60d", "cuentas": 19, "saldo": 121076.77999999998, "color": "#e74c3c"}, {"label": "60+d", "cuentas": 0, "saldo": 0.0, "color": "#c0392b"}];
-const canvas=document.getElementById('cc');
-const ctx=canvas.getContext('2d');
-const tip=document.getElementById('tip');
-let bars=[];
-function draw(){
-  const dpr=window.devicePixelRatio||1;
-  const rect=canvas.getBoundingClientRect();
-  canvas.width=rect.width*dpr; canvas.height=rect.height*dpr;
-  ctx.scale(dpr,dpr);
-  const W=rect.width,H=rect.height;
-  const PL=44,PR=20,PT=32,PB=44;
-  const cW=W-PL-PR,cH=H-PT-PB;
-  const mx=Math.max(...dist.map(d=>d.cuentas),1);
-  const bW=(cW/dist.length)*0.55,gap=cW/dist.length;
-  ctx.clearRect(0,0,W,H);
-  for(let i=0;i<=4;i++){
-    const y=PT+cH-(i/4)*cH;
-    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(PL,y); ctx.lineTo(W-PR,y); ctx.stroke();
-    ctx.fillStyle='#94a3b8'; ctx.font='10px JetBrains Mono,monospace';
-    ctx.textAlign='right'; ctx.fillText(Math.round((i/4)*mx),PL-6,y+4);
-  }
-  bars=[];
-  dist.forEach((d,i)=>{
-    const x=PL+i*gap+(gap-bW)/2;
-    const bH=Math.max((d.cuentas/mx)*cH,3);
-    const y=PT+cH-bH;
-    const r=6;
-    ctx.beginPath();
-    ctx.moveTo(x+r,y); ctx.lineTo(x+bW-r,y);
-    ctx.quadraticCurveTo(x+bW,y,x+bW,y+r);
-    ctx.lineTo(x+bW,y+bH); ctx.lineTo(x,y+bH); ctx.lineTo(x,y+r);
-    ctx.quadraticCurveTo(x,y,x+r,y);
-    ctx.closePath();
-    ctx.fillStyle=d.color; ctx.globalAlpha=0.88; ctx.fill(); ctx.globalAlpha=1;
-    if(d.cuentas>0){
-      ctx.fillStyle='#374151'; ctx.font='bold 12px Inter,sans-serif';
-      ctx.textAlign='center'; ctx.fillText(d.cuentas,x+bW/2,y-7);
-    }
-    ctx.fillStyle='#718096'; ctx.font='11px Inter,sans-serif';
-    ctx.fillText(d.label,x+bW/2,PT+cH+18);
-    bars.push({x,y,w:bW,h:bH,d});
-  });
+const DATA = [{"id": 0, "gestor": "nan", "nombre": "VERONICA AVILES RESENDIZ", "saldo": 813.13, "mora": 9, "promesa": "", "prioridad": "P4", "sub": "9d"}, {"id": 1, "gestor": "nan", "nombre": "JESSICA LIZETH OSORIO VILLEGAS", "saldo": 856.79, "mora": 10, "promesa": "", "prioridad": "P4", "sub": "10d"}, {"id": 2, "gestor": "nan", "nombre": "MARCO ANTONIO ESPINO DE LA CRUZ", "saldo": 1555.6, "mora": 10, "promesa": "", "prioridad": "P4", "sub": "10d"}, {"id": 3, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "GABY NOELIA LOPEZ ANDRADE", "saldo": 968.66, "mora": 11, "promesa": "", "prioridad": "P4", "sub": "11d"}, {"id": 4, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "SANJUANA MARIA AVILES PUENTE", "saldo": 4182.51, "mora": 12, "promesa": "", "prioridad": "P4", "sub": "12d"}, {"id": 5, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ROBERTO DORADO CAMPOS", "saldo": 3984.88, "mora": 12, "promesa": "SI", "prioridad": "P4", "sub": "12d"}, {"id": 6, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "LORENA ALEJANDRA HERNANDEZ MEDINA", "saldo": 2149.66, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 7, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JUAN ESTEBAN FUNES OVANDO", "saldo": 965.41, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 8, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "RODRIGO RODRIGUEZ REYES", "saldo": 1040.35, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 9, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JAVIER RUBEN CHAVEZ MARTINEZ", "saldo": 781.07, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 10, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "LETICIA GONZALEZ GUERRA", "saldo": 6752.02, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 11, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JOSE ANGEL MUÑOZ RAMIREZ", "saldo": 3478.67, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 12, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIO ROLANDO SANDOVAL ZAMORA", "saldo": 4241.1, "mora": 16, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 13, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSALIA RAMIREZ MENDEZ", "saldo": 1410.18, "mora": 16, "promesa": "SI", "prioridad": "P3", "sub": "16d"}, {"id": 14, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "VELIA GARCIA ZAPATA", "saldo": 102.78, "mora": 18, "promesa": "", "prioridad": "P3", "sub": "18d"}, {"id": 15, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ANA MONSERRAT LIZAMA WIDALES", "saldo": 2082.25, "mora": 19, "promesa": "", "prioridad": "P3", "sub": "19d"}, {"id": 16, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ANGELICA LOPEZ CASTILLO", "saldo": 1944.06, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 17, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "FABIO CAMARGO PALMA", "saldo": 565.95, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 18, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "RAMIRO GUADALUPE HERNANDEZ CEDILLO", "saldo": 883.15, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 19, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JOSE FRANCISCO MORALES GONZALEZ", "saldo": 1211.64, "mora": 21, "promesa": "SI", "prioridad": "P3", "sub": "21d"}, {"id": 20, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "VEDA ORDOÑEZ ALFARO", "saldo": 1934.56, "mora": 23, "promesa": "", "prioridad": "P2", "sub": "23d"}, {"id": 21, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSALINDA ZAVALA MARTINEZ", "saldo": 2785.92, "mora": 24, "promesa": "SI", "prioridad": "P2", "sub": "24d"}, {"id": 22, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "MARIA MAGDALENA MEDRANO MORALES", "saldo": 3522.18, "mora": 25, "promesa": "", "prioridad": "P2", "sub": "25d"}, {"id": 23, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JESUS CERVANTES RODRIGUEZ", "saldo": 1883.1, "mora": 25, "promesa": "", "prioridad": "P2", "sub": "25d"}, {"id": 24, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "CESAR ALEJANDRO PINEDA HERNANDEZ", "saldo": 6149.6, "mora": 27, "promesa": "SI", "prioridad": "P2", "sub": "27d"}, {"id": 25, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JOSE LUIS GARCIA HERNANDEZ", "saldo": 2072.56, "mora": 27, "promesa": "", "prioridad": "P2", "sub": "27d"}, {"id": 26, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "MARIA GUADALUPE PERALES CASTILLO", "saldo": 1941.55, "mora": 27, "promesa": "", "prioridad": "P2", "sub": "27d"}, {"id": 27, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "GUADALUPE MARTINEZ SALAZAR", "saldo": 3663.33, "mora": 30, "promesa": "", "prioridad": "P2", "sub": "30d"}, {"id": 28, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "FRANCISCO JAVIER CASTELLANOS GIL", "saldo": 8166.58, "mora": 31, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 29, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIA ISABEL VARGAS CAMPOS", "saldo": 2347.66, "mora": 58, "promesa": "", "prioridad": "P1", "sub": "58d"}, {"id": 30, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "CAROLINA VALADEZ RODRIGUEZ", "saldo": 2489.85, "mora": 37, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 31, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ALEJANDRA AVILA LEZAMA", "saldo": 4053.6, "mora": 52, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 32, "gestor": "RECOVERY 60", "nombre": "JOSE IVAN HERNANDEZ HINOJOSA", "saldo": 2319.19, "mora": 56, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 33, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ERIKA NOEMI GUERRERO ESPINOZA", "saldo": 2004.98, "mora": 33, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 34, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ESMERALDA CARBAJAL CASTILLO", "saldo": 4971.5, "mora": 51, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 35, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "SERGIO GUADALUPE LIZAMA WIDALES", "saldo": 2611.22, "mora": 32, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 36, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ARMANDO HERNANDEZ PADILLA", "saldo": 8672.7, "mora": 55, "promesa": "", "prioridad": "P1", "sub": "55d"}, {"id": 37, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ISRAEL LOPEZ RODRIGUEZ", "saldo": 2079.13, "mora": 38, "promesa": "SI", "prioridad": "P1", "sub": "38d"}, {"id": 38, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSA MARIA IBARRA GARZA", "saldo": 3499.43, "mora": 32, "promesa": "SI", "prioridad": "P1", "sub": "32d"}, {"id": 39, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "EVANGELINA CONTRERAS GAMEZ", "saldo": 2151.27, "mora": 35, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 40, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JOSE GABRIEL GONZALEZ HINOJOSA", "saldo": 6664.1, "mora": 51, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 41, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "AMERICO FLORENTINO HERNANDEZ QUINTERO", "saldo": 8893.36, "mora": 37, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 42, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ROSA IRMA DUARTE SANDOVAL", "saldo": 7159.27, "mora": 42, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 43, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIA PASCUALA MATEO BAUTISTA", "saldo": 7460.84, "mora": 60, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 47, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ISMAEL CHAVEZ RUIZ", "saldo": 17843.99, "mora": 62, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 49, "gestor": "RECOVERY 60", "nombre": "ROBERTO GATICA GIL", "saldo": 10106.27, "mora": 88, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}];
+const STORAGE_KEY = 'carrizo_20260601';
+
+const PRIO_CFG = {
+  P1: { label:'P1 — COBRO INMEDIATO',    desc:'31-60d · Promesas hoy · Rotas',   cls:'P1' },
+  P2: { label:'P2 — PROMESAR HOY',        desc:'22-30 días',                       cls:'P2' },
+  P3: { label:'P3 — PRÓXIMA SEMANA',      desc:'15-21 días',                       cls:'P3' },
+  P4: { label:'P4 — GESTIÓN TEMPRANA',    desc:'8-14 días',                        cls:'P4' },
+};
+
+let estado = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+let filtroActual = 'todos';
+
+function guardar() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
+  const ts = new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'});
+  document.getElementById('last-update').textContent = 'Guardado ' + ts;
+  actualizarProgreso();
 }
-canvas.addEventListener('mousemove',e=>{
-  const rect=canvas.getBoundingClientRect();
-  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-  let hit=null;
-  bars.forEach(b=>{ if(mx>=b.x&&mx<=b.x+b.w&&my>=b.y&&my<=b.y+b.h+20) hit=b; });
-  if(hit){
-    tip.style.opacity='1';
-    tip.style.left=(e.clientX+16)+'px';
-    tip.style.top=(e.clientY-10)+'px';
-    tip.innerHTML=`<b style="color:#63b3ed">${hit.d.label}</b><br>Cuentas: <b>${hit.d.cuentas}</b><br>Saldo: <b>$${(hit.d.saldo/1000).toFixed(1)}k</b>`;
-  } else tip.style.opacity='0';
-});
-canvas.addEventListener('mouseleave',()=>tip.style.opacity='0');
-draw();
-window.addEventListener('resize',draw);
+
+function actualizarProgreso() {
+  const visible = DATA.filter(r => filtroActual === 'todos' || r.gestor.toLowerCase().includes(filtroActual));
+  const visitadas = visible.filter(r => estado[r.id]?.visitado).length;
+  const el = document.getElementById('progress-summary');
+  el.innerHTML = `Visitadas: <b>${visitadas}</b> / ${visible.length}`;
+}
+
+function tagSub(sub) {
+  if (sub === 'PROMESA HOY') return '<span class="tag tag-hoy">✅ HOY</span>';
+  if (sub === 'ROTA')        return '<span class="tag tag-rota">⚠ ROTA</span>';
+  if (sub.endsWith('d'))     return `<span class="tag tag-mora">${sub}</span>`;
+  return '';
+}
+
+function tagPromesa(p) {
+  if (p === 'ROTA') return '<span class="tag tag-rota">ROTA</span>';
+  if (p === 'SI')   return '<span class="tag tag-si">✓ Promesa</span>';
+  return '<span class="tag tag-no">Sin promesa</span>';
+}
+
+function renderTabla(datos) {
+  if (!datos.length) return '<p class="empty">Sin cuentas en este rango</p>';
+  return `<table>
+    <thead><tr>
+      <th>Cliente</th><th>Saldo</th><th>Mora</th><th>Estado</th><th>Visitado / Resultado</th>
+    </tr></thead>
+    <tbody>
+      ${datos.map(r => {
+        const s = estado[r.id] || {};
+        const done = s.visitado ? 'done' : '';
+        const chk  = s.visitado ? 'checked' : '';
+        const res  = s.resultado || '';
+        const ts   = s.timestamp ? `<span class="ts-label">${s.timestamp}</span>` : '';
+        return `<tr class="${done}" id="row-${r.id}">
+          <td class="td-name">${r.nombre}</td>
+          <td class="td-saldo">$${r.saldo.toLocaleString('es-MX',{minimumFractionDigits:0})}</td>
+          <td class="td-mora">${r.mora}d</td>
+          <td>${tagSub(r.sub)} ${tagPromesa(r.promesa)}</td>
+          <td>
+            <div class="visit-cell">
+              <input type="checkbox" class="chk" ${chk}
+                onchange="toggleVisita(${r.id}, this.checked)">
+              <input type="text" class="result-input" placeholder="Resultado..."
+                value="${res}" oninput="guardarResultado(${r.id}, this.value)">
+              ${ts}
+            </div>
+          </td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table>`;
+}
+
+function toggleVisita(id, checked) {
+  if (!estado[id]) estado[id] = {};
+  estado[id].visitado = checked;
+  if (checked) {
+    const now = new Date();
+    estado[id].timestamp = now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  } else {
+    delete estado[id].timestamp;
+  }
+  const row = document.getElementById('row-' + id);
+  if (row) row.className = checked ? 'done' : '';
+  const tsEl = row?.querySelector('.ts-label');
+  if (tsEl) tsEl.textContent = checked ? estado[id].timestamp : '';
+  guardar();
+}
+
+function guardarResultado(id, valor) {
+  if (!estado[id]) estado[id] = {};
+  estado[id].resultado = valor;
+  guardar();
+}
+
+function filtrar(gestor) {
+  filtroActual = gestor;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderAll();
+}
+
+function renderAll() {
+  const filtered = filtroActual === 'todos'
+    ? DATA
+    : DATA.filter(r => r.gestor.toLowerCase().includes(filtroActual));
+
+  const prios = ['P1','P2','P3','P4'];
+  let html = '';
+  prios.forEach(p => {
+    const grupo = filtered.filter(r => r.prioridad === p);
+    if (!grupo.length) return;
+    const total = grupo.reduce((s,r) => s + r.saldo, 0);
+    const cfg = PRIO_CFG[p];
+    html += `<div class="prio-block">
+      <div class="prio-header">
+        <span class="prio-badge ${cfg.cls}">${p}</span>
+        <span style="font-weight:600;font-size:13px">${cfg.label.split('—')[1].trim()}</span>
+        <span class="prio-desc">${cfg.desc}</span>
+        <span class="prio-count">${grupo.length} cuentas · $${total.toLocaleString('es-MX',{minimumFractionDigits:0})}</span>
+      </div>
+      ${renderTabla(grupo)}
+    </div>`;
+  });
+
+  if (!html) html = '<p class="empty">Sin cuentas para este gestor.</p>';
+  document.getElementById('main-content').innerHTML = html;
+  actualizarProgreso();
+}
+
+// Init
+renderAll();
 </script>
 </body>
 </html>
