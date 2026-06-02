@@ -101,7 +101,47 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10px;
   color:var(--muted);border-top:1px solid var(--border);letter-spacing:1px}
 
-/* DESKTOP: tabla clásica en pantallas anchas */
+/* TABS */
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:57px;z-index:98}
+.tab{flex:1;padding:12px;border:none;background:transparent;color:var(--muted);
+  font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.5px}
+.tab:active{background:var(--surface2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* AVANCES */
+.av-section{margin-bottom:24px}
+.av-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.av-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.av-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:10px}
+.av-gestor{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.av-name{font-size:15px;font-weight:700}
+.av-stat{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.av-stat b{color:var(--text)}
+.bar-bg{height:10px;background:var(--surface2);border-radius:5px;overflow:hidden;margin-bottom:6px}
+.bar-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.bar-label{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;justify-content:space-between}
+.av-global{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px}
+.av-global-num{font-family:var(--mono);font-size:36px;font-weight:700;color:var(--accent);line-height:1}
+.av-global-label{font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:14px}
+.rotas-card{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);
+  border-radius:var(--radius);padding:16px}
+.rotas-num{font-family:var(--mono);font-size:36px;font-weight:700;color:#ef4444;line-height:1}
+.rotas-label{font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:12px}
+.rota-item{font-size:12px;padding:6px 0;border-bottom:1px solid rgba(239,68,68,.15);
+  display:flex;justify-content:space-between;align-items:center}
+.rota-item:last-child{border-bottom:none}
+.rota-nombre{font-weight:500;flex:1;margin-right:8px}
+.rota-gestor{font-family:var(--mono);font-size:10px;color:#f97316;
+  background:rgba(249,115,22,.1);padding:2px 8px;border-radius:4px}
+
+@media(max-width:699px){
+  .tabs{top:53px}
+}
+
 @media(min-width:700px){
   .cards{display:none}
   .dtable{display:table;width:100%;border-collapse:collapse}
@@ -148,7 +188,7 @@ footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10p
 <div class="kpi-strip">
   <div class="kpi">
     <div class="kpi-label">1-30 días</div>
-    <div class="kpi-val" style="color:#ef4444">17.0%</div>
+    <div class="kpi-val" style="color:#ef4444">15.0%</div>
     <div class="kpi-meta">meta &lt;10% 🔴</div>
   </div>
   <div class="kpi">
@@ -163,15 +203,28 @@ footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10p
   </div>
 </div>
 
-<div class="filter-bar">
-  <span class="filter-label">GESTOR:</span>
-  <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
-  <button class="filter-btn" onclick="filtrar('eduardo',this)">Eduardo</button>
-  <button class="filter-btn" onclick="filtrar('gerardo',this)">Gerardo</button>
-  <span class="progress" id="prog"></span>
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('plan',this)">📋 Plan</button>
+  <button class="tab" onclick="showTab('avances',this)">📈 Avances</button>
 </div>
 
-<main class="main" id="main"></main>
+<!-- PLAN VIEW -->
+<div id="view-plan">
+  <div class="filter-bar">
+    <span class="filter-label">GESTOR:</span>
+    <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filtrar('eduardo',this)">Eduardo</button>
+    <button class="filter-btn" onclick="filtrar('gerardo',this)">Gerardo</button>
+    <span class="progress" id="prog"></span>
+  </div>
+  <main class="main" id="main"></main>
+</div>
+
+<!-- AVANCES VIEW -->
+<div id="view-avances" style="display:none">
+  <div class="main" id="avances-content"></div>
+</div>
 
 <footer>El Plan del Día · Carrizo 065 · Martes 02 Junio 2026 · Datos guardados en este dispositivo</footer>
 
@@ -195,6 +248,7 @@ function save() {
   const el = document.getElementById('last-save');
   if(el) el.textContent = '✓ ' + t;
   updateProg();
+  if(document.getElementById('view-avances').style.display !== 'none') renderAvances();
 }
 
 function updateProg() {
@@ -322,6 +376,63 @@ function render() {
   });
   document.getElementById('main').innerHTML = html || '<p class="empty">Sin cuentas.</p>';
   updateProg();
+}
+
+function renderAvances() {
+  const rotasPendientes = DATA.filter(r => r.sub === 'ROTA' && !estado[r.id]?.v);
+  const gestores = ['Eduardo','Gerardo'];
+  let gestoresHTML = '';
+  gestores.forEach(g => {
+    const gl    = g.toLowerCase();
+    const total = DATA.filter(r => r.gestor.toLowerCase().includes(gl)).length;
+    const done  = DATA.filter(r => r.gestor.toLowerCase().includes(gl) && estado[r.id]?.v).length;
+    const pct   = total ? Math.round(done/total*100) : 0;
+    const color = pct >= 70 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#ef4444';
+    gestoresHTML += `<div class="av-card">
+      <div class="av-gestor">
+        <span class="av-name">${g}</span>
+        <span class="av-stat"><b>${done}</b> / ${total} visitadas</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="bar-label"><span>${pct}% completado</span><span>${total-done} pendientes</span></div>
+    </div>`;
+  });
+  const totalG = DATA.length;
+  const doneG  = DATA.filter(r => estado[r.id]?.v).length;
+  const pctG   = totalG ? Math.round(doneG/totalG*100) : 0;
+  const colorG = pctG >= 70 ? '#22c55e' : pctG >= 40 ? '#f59e0b' : '#ef4444';
+  const rotasHTML = rotasPendientes.length
+    ? rotasPendientes.map(r => `<div class="rota-item">
+        <span class="rota-nombre">${r.nombre}</span>
+        <span class="rota-gestor">${r.gestor.split(' ')[0]}</span>
+      </div>`).join('')
+    : '<p style="font-size:12px;color:var(--green);padding:8px 0">✅ Todas resueltas</p>';
+  document.getElementById('avances-content').innerHTML = `
+    <div class="av-global">
+      <div class="av-global-num">${pctG}%</div>
+      <div class="av-global-label">del plan completado · ${doneG} de ${totalG} cuentas visitadas</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${pctG}%;background:${colorG}"></div></div>
+    </div>
+    <div class="av-section">
+      <div class="av-title">Por gestor</div>
+      ${gestoresHTML}
+    </div>
+    <div class="av-section">
+      <div class="av-title">Promesas rotas pendientes</div>
+      <div class="rotas-card">
+        <div class="rotas-num">${rotasPendientes.length}</div>
+        <div class="rotas-label">sin resolver hoy</div>
+        ${rotasHTML}
+      </div>
+    </div>`;
+}
+
+function showTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-plan').style.display    = tab==='plan'    ? '' : 'none';
+  document.getElementById('view-avances').style.display = tab==='avances' ? '' : 'none';
+  if(tab==='avances') renderAvances();
 }
 
 render();
