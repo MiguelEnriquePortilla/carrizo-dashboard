@@ -6,8 +6,10 @@
 <title>PLAN DEL DIA DE HOY — Carrizo 065</title>
 <meta property="og:title" content="PLAN DEL DIA DE HOY — Carrizo 065">
 <meta property="og:description" content="Préstamos Relámpago · Sucursal Carrizo 065">
-<meta name="description" content="Préstamos Relámpago · Sucursal Carrizo 065">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
 :root {
   --bg:#0f1117; --surface:#1a1d27; --surface2:#22263a; --border:#2e3350;
@@ -24,26 +26,37 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
   position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .hdr-tag{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
 .hdr-title{font-size:17px;font-weight:700}
-.hdr-date{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;line-height:1.6}
+.hdr-right{text-align:right}
+.hdr-date{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.hdr-sync{font-family:var(--mono);font-size:9px;margin-top:2px}
+.sync-ok{color:var(--green)}
+.sync-wait{color:var(--yellow)}
+.sync-err{color:var(--red)}
 
-/* KPI STRIP — 3 tarjetas iguales, sin scroll */
+/* KPI STRIP */
 .kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 16px;
   background:var(--surface);border-bottom:1px solid var(--border)}
-.kpi{background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:10px 10px 8px}
+.kpi{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 10px 8px}
 .kpi-label{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.5px;
   text-transform:uppercase;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kpi-val{font-family:var(--mono);font-size:22px;font-weight:700;line-height:1}
 .kpi-meta{font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:3px;white-space:nowrap}
 
+/* TABS */
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:57px;z-index:98}
+.tab{flex:1;padding:12px;border:none;background:transparent;color:var(--muted);
+  font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.5px}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
 /* FILTER BAR */
-.filter-bar{padding:10px 16px;display:flex;align-items:center;gap:8px;
-  background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:57px;z-index:99}
+.filter-bar{padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:104px;z-index:97}
 .filter-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;white-space:nowrap}
 .filter-btn{min-height:var(--touch);padding:0 18px;border-radius:22px;border:1px solid var(--border);
   background:transparent;color:var(--muted);font-family:var(--mono);font-size:12px;
   cursor:pointer;transition:all .15s;display:flex;align-items:center}
-.filter-btn:active{transform:scale(.96)}
 .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 .progress{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
 .progress b{color:var(--green)}
@@ -54,8 +67,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 /* PRIORITY BLOCK */
 .prio-block{margin-bottom:20px}
 .prio-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.prio-badge{font-family:var(--mono);font-size:10px;font-weight:700;
-  padding:4px 10px;border-radius:6px;letter-spacing:1px}
+.prio-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:1px}
 .prio-badge.P1{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
 .prio-badge.P2{background:rgba(249,115,22,.15);color:#f97316;border:1px solid rgba(249,115,22,.3)}
 .prio-badge.P3{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
@@ -64,18 +76,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .prio-desc{font-size:11px;color:var(--muted)}
 .prio-count{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto}
 
-/* CARDS (reemplaza tabla en móvil) */
+/* CARDS — móvil */
 .cards{display:flex;flex-direction:column;gap:8px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:14px;transition:border-color .15s}
-.card.done{opacity:.5;border-color:var(--border)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:border-color .15s,opacity .2s}
+.card.done{opacity:.45}
 .card.done .card-name{text-decoration:line-through;color:var(--muted)}
 .card-top{display:flex;align-items:flex-start;gap:12px}
-.card-chk{width:22px;height:22px;min-width:22px;accent-color:var(--accent);
-  cursor:pointer;margin-top:2px}
+.card-chk{width:22px;height:22px;min-width:22px;accent-color:var(--accent);cursor:pointer;margin-top:2px}
 .card-info{flex:1;min-width:0}
-.card-name{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:6px;
-  word-break:break-word}
+.card-name{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:6px;word-break:break-word}
 .card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .card-saldo{font-family:var(--mono);font-size:13px;color:#a5b4fc;font-weight:500}
 .card-ts{font-family:var(--mono);font-size:10px;color:var(--green);margin-left:auto;white-space:nowrap}
@@ -87,8 +96,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .card-result input::placeholder{color:var(--muted)}
 
 /* TAGS */
-.tag{display:inline-block;padding:3px 8px;border-radius:5px;
-  font-family:var(--mono);font-size:10px;font-weight:600;white-space:nowrap}
+.tag{display:inline-block;padding:3px 8px;border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:600;white-space:nowrap}
 .tag-hoy{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
 .tag-rota{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
 .tag-si{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3)}
@@ -96,52 +104,38 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .tag-mora{background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3)}
 .tag-gestor{background:rgba(99,102,241,.08);color:#818cf8;border:1px solid rgba(99,102,241,.2);font-size:9px}
 
-.empty{text-align:center;padding:32px;color:var(--muted);font-family:var(--mono);font-size:12px}
-
-footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10px;
-  color:var(--muted);border-top:1px solid var(--border);letter-spacing:1px}
-
-/* TABS */
-.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
-  position:sticky;top:57px;z-index:98}
-.tab{flex:1;padding:12px;border:none;background:transparent;color:var(--muted);
-  font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;
-  border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.5px}
-.tab:active{background:var(--surface2)}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-
 /* AVANCES */
 .av-section{margin-bottom:24px}
 .av-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;
   color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .av-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.av-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:16px;margin-bottom:10px}
+.av-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px}
 .av-gestor{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .av-name{font-size:15px;font-weight:700}
 .av-stat{font-family:var(--mono);font-size:13px;color:var(--muted)}
 .av-stat b{color:var(--text)}
 .bar-bg{height:10px;background:var(--surface2);border-radius:5px;overflow:hidden;margin-bottom:6px}
-.bar-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.bar-fill{height:100%;border-radius:5px;transition:width .5s ease}
 .bar-label{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;justify-content:space-between}
 .av-global{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px}
 .av-global-num{font-family:var(--mono);font-size:36px;font-weight:700;color:var(--accent);line-height:1}
 .av-global-label{font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:14px}
-.rotas-card{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);
-  border-radius:var(--radius);padding:16px}
+.rotas-card{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);border-radius:var(--radius);padding:16px}
 .rotas-num{font-family:var(--mono);font-size:36px;font-weight:700;color:#ef4444;line-height:1}
 .rotas-label{font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:12px}
 .rota-item{font-size:12px;padding:6px 0;border-bottom:1px solid rgba(239,68,68,.15);
   display:flex;justify-content:space-between;align-items:center}
 .rota-item:last-child{border-bottom:none}
 .rota-nombre{font-weight:500;flex:1;margin-right:8px}
-.rota-gestor{font-family:var(--mono);font-size:10px;color:#f97316;
-  background:rgba(249,115,22,.1);padding:2px 8px;border-radius:4px}
+.rota-gestor{font-family:var(--mono);font-size:10px;color:#f97316;background:rgba(249,115,22,.1);padding:2px 8px;border-radius:4px}
 
-@media(max-width:699px){
-  .tabs{top:53px}
-}
+.empty{text-align:center;padding:32px;color:var(--muted);font-family:var(--mono);font-size:12px}
+.loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:1px}
 
+footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10px;
+  color:var(--muted);border-top:1px solid var(--border);letter-spacing:1px}
+
+/* DESKTOP: tabla */
 @media(min-width:700px){
   .cards{display:none}
   .dtable{display:table;width:100%;border-collapse:collapse}
@@ -163,12 +157,11 @@ footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10p
   .dt-result:focus{outline:none;border-color:var(--accent)}
   .dt-result::placeholder{color:var(--muted)}
   .dt-ts{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
-  .filter-bar{top:61px}
+  .tabs{top:61px}
+  .filter-bar{top:108px}
 }
 @media(max-width:699px){
   .dtable{display:none}
-  .hdr{top:0}
-  .filter-bar{top:53px}
 }
 </style>
 </head>
@@ -179,16 +172,16 @@ footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10p
     <div class="hdr-tag">Carrizo 065</div>
     <div class="hdr-title">El Plan del Día</div>
   </div>
-  <div class="hdr-date">
-    Martes 02 Junio 2026<br>
-    <span id="last-save"></span>
+  <div class="hdr-right">
+    <div class="hdr-date">Martes 02 Junio 2026</div>
+    <div class="hdr-sync" id="sync-status"><span class="sync-wait">⏳ conectando...</span></div>
   </div>
 </header>
 
 <div class="kpi-strip">
   <div class="kpi">
     <div class="kpi-label">1-30 días</div>
-    <div class="kpi-val" style="color:#ef4444">17.0%</div>
+    <div class="kpi-val" style="color:#ef4444">18.0%</div>
     <div class="kpi-meta">meta &lt;10% 🔴</div>
   </div>
   <div class="kpi">
@@ -198,18 +191,16 @@ footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10p
   </div>
   <div class="kpi">
     <div class="kpi-label">31-150 días</div>
-    <div class="kpi-val" style="color:#ef4444">17.6%</div>
+    <div class="kpi-val" style="color:#ef4444">15.0%</div>
     <div class="kpi-meta">meta &lt;6.9% 🔴</div>
   </div>
 </div>
 
-<!-- TABS -->
 <div class="tabs">
   <button class="tab active" onclick="showTab('plan',this)">📋 Plan</button>
   <button class="tab" onclick="showTab('avances',this)">📈 Avances</button>
 </div>
 
-<!-- PLAN VIEW -->
 <div id="view-plan">
   <div class="filter-bar">
     <span class="filter-label">GESTOR:</span>
@@ -218,19 +209,34 @@ footer{text-align:center;padding:20px 16px;font-family:var(--mono);font-size:10p
     <button class="filter-btn" onclick="filtrar('gerardo',this)">Gerardo</button>
     <span class="progress" id="prog"></span>
   </div>
-  <main class="main" id="main"></main>
+  <main class="main" id="main"><p class="loading">⏳ cargando gestiones...</p></main>
 </div>
 
-<!-- AVANCES VIEW -->
 <div id="view-avances" style="display:none">
-  <div class="main" id="avances-content"></div>
+  <div class="main" id="avances-content"><p class="loading">⏳ cargando avances...</p></div>
 </div>
 
-<footer>El Plan del Día · Carrizo 065 · Martes 02 Junio 2026 · Datos guardados en este dispositivo</footer>
+<footer>El Plan del Día · Carrizo 065 · Martes 02 Junio 2026 · Sync en tiempo real</footer>
 
 <script>
+// ── Firebase config ──────────────────────────────────────
+const FB_CFG = {
+  apiKey:            "AIzaSyBS4mw2Xg7KetprjKrSWQAYPIXmEg4_g2w",
+  authDomain:        "carrizo-cobranza.firebaseapp.com",
+  databaseURL:       "https://carrizo-cobranza-default-rtdb.firebaseio.com",
+  projectId:         "carrizo-cobranza",
+  storageBucket:     "carrizo-cobranza.firebasestorage.app",
+  messagingSenderId: "585728684003",
+  appId:             "1:585728684003:web:e0355d2277fa9345423ad6"
+};
+firebase.initializeApp(FB_CFG);
+const db      = firebase.database();
+const DIA_KEY = '20260602';
+const REF     = db.ref('carrizo/' + DIA_KEY);
+
+// ── Datos del día (generados por Python) ─────────────────
 const DATA = [{"id": 0, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "KARLA PAOLA FERREL ORTIZ", "saldo": 3308.49, "mora": 8, "promesa": "", "prioridad": "P4", "sub": "8d"}, {"id": 1, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "EDITH MARTINEZ RAMIREZ", "saldo": 2564.82, "mora": 8, "promesa": "", "prioridad": "P4", "sub": "8d"}, {"id": 2, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JUAN JOSE RENDON GARCIA", "saldo": 1273.64, "mora": 8, "promesa": "", "prioridad": "P4", "sub": "8d"}, {"id": 3, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "VERONICA AVILES RESENDIZ", "saldo": 820.76, "mora": 10, "promesa": "", "prioridad": "P4", "sub": "10d"}, {"id": 4, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JESSICA LIZETH OSORIO VILLEGAS", "saldo": 860.16, "mora": 11, "promesa": "", "prioridad": "P4", "sub": "11d"}, {"id": 5, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARCO ANTONIO ESPINO DE LA CRUZ", "saldo": 1561.61, "mora": 11, "promesa": "", "prioridad": "P4", "sub": "11d"}, {"id": 6, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "GABY NOELIA LOPEZ ANDRADE", "saldo": 971.61, "mora": 12, "promesa": "", "prioridad": "P4", "sub": "12d"}, {"id": 7, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "SANJUANA MARIA AVILES PUENTE", "saldo": 4199.61, "mora": 13, "promesa": "", "prioridad": "P4", "sub": "13d"}, {"id": 8, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ROBERTO DORADO CAMPOS", "saldo": 3998.17, "mora": 13, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 9, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "LORENA ALEJANDRA HERNANDEZ MEDINA", "saldo": 3230.61, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 10, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JUAN ESTEBAN FUNES OVANDO", "saldo": 1888.77, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 11, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "RODRIGO RODRIGUEZ REYES", "saldo": 1584.08, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 12, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JAVIER RUBEN CHAVEZ MARTINEZ", "saldo": 1253.62, "mora": 14, "promesa": "", "prioridad": "P4", "sub": "14d"}, {"id": 13, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "LETICIA GONZALEZ GUERRA", "saldo": 6782.06, "mora": 15, "promesa": "", "prioridad": "P3", "sub": "15d"}, {"id": 14, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JOSE ANGEL MUÑOZ RAMIREZ", "saldo": 3490.19, "mora": 15, "promesa": "", "prioridad": "P3", "sub": "15d"}, {"id": 15, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIO ROLANDO SANDOVAL ZAMORA", "saldo": 4253.05, "mora": 17, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 16, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSALIA RAMIREZ MENDEZ", "saldo": 1417.18, "mora": 17, "promesa": "SI", "prioridad": "P3", "sub": "17d"}, {"id": 17, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "VELIA GARCIA ZAPATA", "saldo": 102.84, "mora": 19, "promesa": "", "prioridad": "P3", "sub": "19d"}, {"id": 18, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ANA MONSERRAT LIZAMA WIDALES", "saldo": 2091.72, "mora": 20, "promesa": "", "prioridad": "P3", "sub": "20d"}, {"id": 19, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ANGELICA LOPEZ CASTILLO", "saldo": 2747.62, "mora": 21, "promesa": "", "prioridad": "P3", "sub": "21d"}, {"id": 20, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "FABIO CAMARGO PALMA", "saldo": 823.13, "mora": 21, "promesa": "", "prioridad": "P3", "sub": "21d"}, {"id": 21, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "RAMIRO GUADALUPE HERNANDEZ CEDILLO", "saldo": 1170.39, "mora": 21, "promesa": "", "prioridad": "P3", "sub": "21d"}, {"id": 22, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "VEDA ORDOÑEZ ALFARO", "saldo": 1946.19, "mora": 24, "promesa": "", "prioridad": "P2", "sub": "24d"}, {"id": 23, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSALINDA ZAVALA MARTINEZ", "saldo": 2799.24, "mora": 25, "promesa": "SI", "prioridad": "P2", "sub": "25d"}, {"id": 24, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "MARIA MAGDALENA MEDRANO MORALES", "saldo": 3531.83, "mora": 26, "promesa": "", "prioridad": "P2", "sub": "26d"}, {"id": 25, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JESUS CERVANTES RODRIGUEZ", "saldo": 1886.15, "mora": 26, "promesa": "", "prioridad": "P2", "sub": "26d"}, {"id": 26, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "CESAR ALEJANDRO PINEDA HERNANDEZ", "saldo": 6166.69, "mora": 28, "promesa": "SI", "prioridad": "P2", "sub": "28d"}, {"id": 27, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "JOSE LUIS GARCIA HERNANDEZ", "saldo": 2738.82, "mora": 28, "promesa": "", "prioridad": "P2", "sub": "28d"}, {"id": 28, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "MARIA GUADALUPE PERALES CASTILLO", "saldo": 2440.03, "mora": 28, "promesa": "", "prioridad": "P2", "sub": "28d"}, {"id": 29, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "FRANCISCO JAVIER CASTELLANOS GIL", "saldo": 8183.02, "mora": 32, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 30, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "MARIA ISABEL VARGAS CAMPOS", "saldo": 2352.47, "mora": 59, "promesa": "", "prioridad": "P1", "sub": "59d"}, {"id": 31, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "CAROLINA VALADEZ RODRIGUEZ", "saldo": 2496.55, "mora": 38, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 32, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ALEJANDRA AVILA LEZAMA", "saldo": 4070.46, "mora": 53, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 33, "gestor": "RECOVERY 60", "nombre": "JOSE IVAN HERNANDEZ HINOJOSA", "saldo": 2323.21, "mora": 57, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 34, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ERIKA NOEMI GUERRERO ESPINOZA", "saldo": 2009.23, "mora": 34, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 35, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ESMERALDA CARBAJAL CASTILLO", "saldo": 4993.13, "mora": 52, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 36, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "SERGIO GUADALUPE LIZAMA WIDALES", "saldo": 2622.4, "mora": 33, "promesa": "SI", "prioridad": "P1", "sub": "PROMESA HOY"}, {"id": 37, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ARMANDO HERNANDEZ PADILLA", "saldo": 9650.12, "mora": 56, "promesa": "", "prioridad": "P1", "sub": "56d"}, {"id": 38, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ISRAEL LOPEZ RODRIGUEZ", "saldo": 2087.23, "mora": 39, "promesa": "SI", "prioridad": "P1", "sub": "39d"}, {"id": 39, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "ROSA MARIA IBARRA GARZA", "saldo": 3511.62, "mora": 33, "promesa": "SI", "prioridad": "P1", "sub": "33d"}, {"id": 40, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "EVANGELINA CONTRERAS GAMEZ", "saldo": 2158.22, "mora": 36, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 41, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "JOSE GABRIEL GONZALEZ HINOJOSA", "saldo": 6687.76, "mora": 52, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 42, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "AMERICO FLORENTINO HERNANDEZ QUINTERO", "saldo": 8934.24, "mora": 38, "promesa": "ROTA", "prioridad": "P1", "sub": "ROTA"}, {"id": 43, "gestor": "GPR65 JOSE EDUARDO MORALES ZAMORA", "nombre": "GUADALUPE MARTINEZ SALAZAR", "saldo": 6470.23, "mora": 31, "promesa": "", "prioridad": "P1", "sub": "31d"}, {"id": 44, "gestor": "GPR65 GERARDO ANDA RIOS", "nombre": "ROSA IRMA DUARTE SANDOVAL", "saldo": 7180.99, "mora": 43, "promesa": "", "prioridad": "P1", "sub": "43d"}];
-const KEY  = 'carrizo_20260602';
+
 const PCFG = {
   P1:{title:'COBRO INMEDIATO', desc:'31-60d · Promesas hoy · Rotas'},
   P2:{title:'PROMESAR HOY',    desc:'22-30 días'},
@@ -238,25 +244,43 @@ const PCFG = {
   P4:{title:'GESTIÓN TEMPRANA',desc:'8-14 días'},
 };
 
-let estado = {};
-try { estado = JSON.parse(localStorage.getItem(KEY)||'{}'); } catch(e){}
-let filtro = 'todos';
+let estado  = {};  // se llena desde Firebase en tiempo real
+let filtro  = 'todos';
+let tabActiva = 'plan';
 
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(estado)); } catch(e){}
-  const t = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  const el = document.getElementById('last-save');
-  if(el) el.textContent = '✓ ' + t;
-  updateProg();
-  if(document.getElementById('view-avances').style.display !== 'none') renderAvances();
+// ── Firebase: escuchar cambios en tiempo real ─────────────
+REF.on('value', snap => {
+  estado = snap.val() || {};
+  setSyncStatus('ok');
+  render();
+  if(tabActiva === 'avances') renderAvances();
+}, err => {
+  setSyncStatus('err');
+});
+
+function setSyncStatus(s) {
+  const el = document.getElementById('sync-status');
+  if(s === 'ok')  el.innerHTML = '<span class="sync-ok">● en vivo</span>';
+  if(s === 'err') el.innerHTML = '<span class="sync-err">● sin conexión</span>';
 }
 
-function updateProg() {
-  const vis = DATA.filter(r => filtro==='todos' || r.gestor.toLowerCase().includes(filtro));
-  const done = vis.filter(r => estado[r.id]?.v).length;
-  document.getElementById('prog').innerHTML = `Visitadas: <b>${done}</b>/${vis.length}`;
+// ── Guardar en Firebase ───────────────────────────────────
+function saveItem(id, data) {
+  REF.child(String(id)).update(data);
 }
 
+function toggleV(id, chk) {
+  const ts = chk ? new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}) : null;
+  saveItem(id, {v: chk, ts: ts});
+}
+
+let resTimers = {};
+function saveRes(id, val) {
+  clearTimeout(resTimers[id]);
+  resTimers[id] = setTimeout(() => saveItem(id, {r: val}), 600);
+}
+
+// ── Tags ─────────────────────────────────────────────────
 function tagSub(sub) {
   if(sub==='PROMESA HOY') return '<span class="tag tag-hoy">✅ HOY</span>';
   if(sub==='ROTA')        return '<span class="tag tag-rota">⚠ ROTA</span>';
@@ -268,97 +292,81 @@ function tagProm(p) {
   return '<span class="tag tag-no">Sin promesa</span>';
 }
 
-function toggleV(id, chk) {
-  if(!estado[id]) estado[id]={};
-  estado[id].v = chk;
-  estado[id].ts = chk ? new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}) : null;
-  // update card
-  ['card','drow'].forEach(prefix => {
-    const el = document.getElementById(prefix+'-'+id);
-    if(!el) return;
-    el.className = el.className.replace(' done','') + (chk?' done':'');
-  });
-  // update ts labels
-  document.querySelectorAll('.ts-'+id).forEach(el => el.textContent = chk?(estado[id].ts||''):'');
-  save();
-}
-
-function saveRes(id, val) {
-  if(!estado[id]) estado[id]={};
-  estado[id].r = val;
-  save();
-}
-
+// ── Render Cards (móvil) ─────────────────────────────────
 function renderCards(datos) {
   if(!datos.length) return '<p class="empty">Sin cuentas en este rango.</p>';
   return '<div class="cards">' + datos.map(r => {
-    const s   = estado[r.id]||{};
-    const chk = s.v?'checked':'';
-    const res = s.r||'';
-    const ts  = s.ts||'';
-    const gestorTag = filtro==='todos' ? `<span class="tag tag-gestor">${r.gestor.split(' ')[0]}</span>` : '';
+    const s   = estado[r.id] || {};
+    const chk = s.v ? 'checked' : '';
+    const res = s.r || '';
+    const ts  = s.ts || '';
+    const gestorTag = filtro==='todos'
+      ? `<span class="tag tag-gestor">${r.gestor.split(' ')[0]}</span>` : '';
     return `<div class="card${s.v?' done':''}" id="card-${r.id}">
       <div class="card-top">
-        <input type="checkbox" class="card-chk" ${chk} onchange="toggleV(${r.id},this.checked)">
+        <input type="checkbox" class="card-chk" ${chk}
+          onchange="toggleV(${r.id},this.checked)">
         <div class="card-info">
           <div class="card-name">${r.nombre}</div>
           <div class="card-meta">
             <span class="card-saldo">$${r.saldo.toLocaleString('es-MX',{minimumFractionDigits:0})}</span>
             ${tagSub(r.sub)} ${tagProm(r.promesa)} ${gestorTag}
-            <span class="card-ts ts-${r.id}">${ts}</span>
+            <span class="card-ts">${ts}</span>
           </div>
         </div>
       </div>
       <div class="card-result">
-        <input type="text" placeholder="Resultado de la gestión..." value="${res}"
-          oninput="saveRes(${r.id},this.value)">
+        <input type="text" placeholder="Resultado de la gestión..."
+          value="${res}" oninput="saveRes(${r.id},this.value)">
       </div>
     </div>`;
   }).join('') + '</div>';
 }
 
+// ── Render Table (desktop) ───────────────────────────────
 function renderTable(datos) {
-  if(!datos.length) return '<p class="empty">Sin cuentas en este rango.</p>';
-  const gestorCol = filtro==='todos';
+  if(!datos.length) return '';
+  const gc = filtro==='todos';
   return `<table class="dtable">
     <thead><tr>
       <th>Cliente</th><th>Saldo</th><th>Mora</th><th>Estado</th>
-      ${gestorCol?'<th>Gestor</th>':''}
+      ${gc?'<th>Gestor</th>':''}
       <th>Visitado / Resultado</th>
     </tr></thead>
-    <tbody>${datos.map(r=>{
-      const s=estado[r.id]||{};
-      const chk=s.v?'checked':'';
-      const res=s.r||'';
-      const ts=s.ts||'';
+    <tbody>${datos.map(r => {
+      const s   = estado[r.id] || {};
+      const chk = s.v ? 'checked' : '';
+      const res = s.r || '';
+      const ts  = s.ts || '';
       return `<tr class="${s.v?'done':''}" id="drow-${r.id}">
         <td class="td-name">${r.nombre}</td>
         <td class="td-saldo">$${r.saldo.toLocaleString('es-MX',{minimumFractionDigits:0})}</td>
         <td class="td-mora">${r.mora}d</td>
         <td>${tagSub(r.sub)} ${tagProm(r.promesa)}</td>
-        ${gestorCol?`<td style="font-size:11px;color:var(--muted)">${r.gestor.split(' ')[0]}</td>`:''}
+        ${gc?`<td style="font-size:11px;color:var(--muted)">${r.gestor.split(' ')[0]}</td>`:''}
         <td><div class="visit-cell">
-          <input type="checkbox" class="dt-chk" ${chk} onchange="toggleV(${r.id},this.checked)">
-          <input type="text" class="dt-result" placeholder="Resultado..." value="${res}"
-            oninput="saveRes(${r.id},this.value)">
-          <span class="dt-ts ts-${r.id}">${ts}</span>
+          <input type="checkbox" class="dt-chk" ${chk}
+            onchange="toggleV(${r.id},this.checked)">
+          <input type="text" class="dt-result" placeholder="Resultado..."
+            value="${res}" oninput="saveRes(${r.id},this.value)">
+          <span class="dt-ts">${ts}</span>
         </div></td>
       </tr>`;
     }).join('')}</tbody>
   </table>`;
 }
 
-function filtrar(g, btn) {
-  filtro = g;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  render();
+// ── Render Plan ──────────────────────────────────────────
+function updateProg() {
+  const vis  = filtro==='todos' ? DATA : DATA.filter(r=>r.gestor.toLowerCase().includes(filtro));
+  const done = vis.filter(r=>estado[r.id]?.v).length;
+  document.getElementById('prog').innerHTML = `Visitadas: <b>${done}</b>/${vis.length}`;
 }
 
 function render() {
   const fd = filtro==='todos' ? DATA : DATA.filter(r=>r.gestor.toLowerCase().includes(filtro));
   let html = '';
-  ['P1','P2','P3','P4'].forEach(p=>{
+  ['P1','P2','P3','P4'].forEach(p => {
     const g = fd.filter(r=>r.prioridad===p);
     if(!g.length) return;
     const tot = g.reduce((s,r)=>s+r.saldo,0);
@@ -378,16 +386,17 @@ function render() {
   updateProg();
 }
 
+// ── Render Avances ───────────────────────────────────────
 function renderAvances() {
-  const rotasPendientes = DATA.filter(r => r.sub === 'ROTA' && !estado[r.id]?.v);
+  const rotasPendientes = DATA.filter(r => r.sub==='ROTA' && !estado[r.id]?.v);
   const gestores = ['Eduardo','Gerardo'];
   let gestoresHTML = '';
   gestores.forEach(g => {
     const gl    = g.toLowerCase();
-    const total = DATA.filter(r => r.gestor.toLowerCase().includes(gl)).length;
-    const done  = DATA.filter(r => r.gestor.toLowerCase().includes(gl) && estado[r.id]?.v).length;
+    const total = DATA.filter(r=>r.gestor.toLowerCase().includes(gl)).length;
+    const done  = DATA.filter(r=>r.gestor.toLowerCase().includes(gl) && estado[r.id]?.v).length;
     const pct   = total ? Math.round(done/total*100) : 0;
-    const color = pct >= 70 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#ef4444';
+    const color = pct>=70?'#22c55e':pct>=40?'#f59e0b':'#ef4444';
     gestoresHTML += `<div class="av-card">
       <div class="av-gestor">
         <span class="av-name">${g}</span>
@@ -397,16 +406,19 @@ function renderAvances() {
       <div class="bar-label"><span>${pct}% completado</span><span>${total-done} pendientes</span></div>
     </div>`;
   });
+
   const totalG = DATA.length;
-  const doneG  = DATA.filter(r => estado[r.id]?.v).length;
+  const doneG  = DATA.filter(r=>estado[r.id]?.v).length;
   const pctG   = totalG ? Math.round(doneG/totalG*100) : 0;
-  const colorG = pctG >= 70 ? '#22c55e' : pctG >= 40 ? '#f59e0b' : '#ef4444';
+  const colorG = pctG>=70?'#22c55e':pctG>=40?'#f59e0b':'#ef4444';
+
   const rotasHTML = rotasPendientes.length
-    ? rotasPendientes.map(r => `<div class="rota-item">
+    ? rotasPendientes.map(r=>`<div class="rota-item">
         <span class="rota-nombre">${r.nombre}</span>
         <span class="rota-gestor">${r.gestor.split(' ')[0]}</span>
       </div>`).join('')
     : '<p style="font-size:12px;color:var(--green);padding:8px 0">✅ Todas resueltas</p>';
+
   document.getElementById('avances-content').innerHTML = `
     <div class="av-global">
       <div class="av-global-num">${pctG}%</div>
@@ -427,15 +439,22 @@ function renderAvances() {
     </div>`;
 }
 
+// ── Tabs / Filtro ────────────────────────────────────────
 function showTab(tab, btn) {
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  tabActiva = tab;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('view-plan').style.display    = tab==='plan'    ? '' : 'none';
   document.getElementById('view-avances').style.display = tab==='avances' ? '' : 'none';
   if(tab==='avances') renderAvances();
 }
 
-render();
+function filtrar(g, btn) {
+  filtro = g;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  render();
+}
 </script>
 </body>
 </html>
